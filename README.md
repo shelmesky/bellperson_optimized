@@ -1,3 +1,12 @@
+# C2 in 880s tested.
+- this is special for 2080Ti, may not work with any other GPU cards. because different gpu have different cuda-cores and mem.
+- some calculations with cpus change to parallel.
+- change params special for 2080Ti. because it has 68 SMs and 64 SP per SM.
+- we are going on with more optimizations. May 100s even more can be saved.
+- Team work requests are welcome!
+
+From ZQBC
+
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
 > This is a fork of the great [bellman](https://github.com/zkcrypto/bellman) library.
