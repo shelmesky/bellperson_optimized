@@ -11,8 +11,13 @@ use log::{error, info};
 use rust_gpu_tools::*;
 use std::any::TypeId;
 use std::sync::Arc;
+use std::time::Instant;
 
-const MAX_WINDOW_SIZE: usize = 10;
+use std::sync::mpsc;
+extern crate scoped_threadpool;
+use scoped_threadpool::Pool;
+
+const MAX_WINDOW_SIZE: usize = 11;
 const LOCAL_WORK_SIZE: usize = 256;
 const MEMORY_PADDING: f64 = 0.2f64; // Let 20% of GPU memory be free
 
@@ -47,34 +52,34 @@ where
 
 fn calc_num_groups(core_count: usize, num_windows: usize) -> usize {
     // Observations show that we get the best performance when num_groups * num_windows ~= 2 * CUDA_CORES
-    2 * core_count / num_windows
+    4 * core_count / num_windows
 }
 
-fn calc_window_size(n: usize, exp_bits: usize, core_count: usize) -> usize {
-    // window_size = ln(n / num_groups)
-    // num_windows = exp_bits / window_size
-    // num_groups = 2 * core_count / num_windows = 2 * core_count * window_size / exp_bits
-    // window_size = ln(n / num_groups) = ln(n * exp_bits / (2 * core_count * window_size))
-    // window_size = ln(exp_bits * n / (2 * core_count)) - ln(window_size)
-    //
-    // Thus we need to solve the following equation:
-    // window_size + ln(window_size) = ln(exp_bits * n / (2 * core_count))
-    let lower_bound = (((exp_bits * n) as f64) / ((2 * core_count) as f64)).ln();
-    for w in 0..MAX_WINDOW_SIZE {
-        if (w as f64) + (w as f64).ln() > lower_bound {
-            return w;
-        }
-    }
+// fn calc_window_size(n: usize, exp_bits: usize, core_count: usize) -> usize {
+//     // window_size = ln(n / num_groups)
+//     // num_windows = exp_bits / window_size
+//     // num_groups = 2 * core_count / num_windows = 2 * core_count * window_size / exp_bits
+//     // window_size = ln(n / num_groups) = ln(n * exp_bits / (2 * core_count * window_size))
+//     // window_size = ln(exp_bits * n / (2 * core_count)) - ln(window_size)
+//     //
+//     // Thus we need to solve the following equation:
+//     // window_size + ln(window_size) = ln(exp_bits * n / (2 * core_count))
+//     let lower_bound = (((exp_bits * n) as f64) / ((4 * core_count) as f64)).ln();
+//     for w in 0..MAX_WINDOW_SIZE {
+//         if (w as f64) + (w as f64).ln() > lower_bound {
+//             return w;
+//         }
+//     }
 
-    MAX_WINDOW_SIZE
-}
+//     MAX_WINDOW_SIZE
+// }
 
 fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usize) -> usize {
     // Best chunk-size (N) can also be calculated using the same logic as calc_window_size:
     // n = e^window_size * window_size * 2 * core_count / exp_bits
     (((max_window_size as f64).exp() as f64)
         * (max_window_size as f64)
-        * 2f64
+        * 4f64
         * (core_count as f64)
         / (exp_bits as f64))
         .ceil() as usize
@@ -88,7 +93,7 @@ where
     let exp_size = exp_size::<E>();
     let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
     ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
-        - (2 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
+        - (4 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
         / (aff_size + exp_size)
 }
 
@@ -133,10 +138,20 @@ where
         }
 
         let exp_bits = exp_size::<E>() * 8;
-        let window_size = calc_window_size(n as usize, exp_bits, self.core_count);
+        // let window_size = calc_window_size(n as usize, exp_bits, self.core_count);
+        let window_size = MAX_WINDOW_SIZE;
         let num_windows = ((exp_bits as f64) / (window_size as f64)).ceil() as usize;
         let num_groups = calc_num_groups(self.core_count, num_windows);
         let bucket_len = 1 << window_size;
+
+        // let size1 = std::mem::size_of::<G>();
+        // let size2 = std::mem::size_of::<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>();
+        // let size3 = std::mem::size_of::<<G as CurveAffine>::Projective>();
+        // let mem1 = size1 * n;
+        // let mem2 = size2 * n;
+        // let mem3 = size3 * 4 * self.core_count * bucket_len;
+        // let mem4 = size3 * 4 * self.core_count;
+        // info!("ZQ: GPU mem need: {}Mbyte", (mem1 + mem2 + mem3 + mem4)/(1024*1024));
 
         // Each group will have `num_windows` threads and as there are `num_groups` groups, there will
         // be `num_groups` * `num_windows` threads in total.
@@ -148,13 +163,12 @@ where
             .program
             .create_buffer::<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>(n)?;
         exp_buffer.write_from(0, exps)?;
-
         let bucket_buffer = self
             .program
-            .create_buffer::<<G as CurveAffine>::Projective>(2 * self.core_count * bucket_len)?;
+            .create_buffer::<<G as CurveAffine>::Projective>(4 * self.core_count * bucket_len)?;
         let result_buffer = self
             .program
-            .create_buffer::<<G as CurveAffine>::Projective>(2 * self.core_count)?;
+            .create_buffer::<<G as CurveAffine>::Projective>(4 * self.core_count)?;
 
         // Make global work size divisible by `LOCAL_WORK_SIZE`
         let mut global_work_size = num_windows * num_groups;
@@ -279,12 +293,10 @@ where
         // https://github.com/zkcrypto/bellman/blob/10c5010fd9c2ca69442dc9775ea271e286e776d8/src/multiexp.rs#L38
         let bases = &bases[skip..(skip + n)];
         let exps = &exps[..n];
-
         let cpu_n = ((n as f64) * get_cpu_utilization()) as usize;
         let n = n - cpu_n;
         let (cpu_bases, bases) = bases.split_at(cpu_n);
         let (cpu_exps, exps) = exps.split_at(cpu_n);
-
         let chunk_size = ((n as f64) / (num_devices as f64)).ceil() as usize;
 
         crate::multicore::THREAD_POOL.install(|| {
@@ -292,38 +304,64 @@ where
 
             let mut acc = <G as CurveAffine>::Projective::zero();
 
-            let results = if n > 0 {
-                bases
-                    .par_chunks(chunk_size)
-                    .zip(exps.par_chunks(chunk_size))
-                    .zip(self.kernels.par_iter_mut())
-                    .map(|((bases, exps), kern)| -> Result<<G as CurveAffine>::Projective, GPUError> {
-                        let mut acc = <G as CurveAffine>::Projective::zero();
-                        for (bases, exps) in bases.chunks(kern.n).zip(exps.chunks(kern.n)) {
-                            let result = kern.multiexp(bases, exps, bases.len())?;
-                            acc.add_assign(&result);
-                        }
+            // concurrent computing
+            let (tx_gpu, rx_gpu) = mpsc::channel();
+            let (tx_cpu, rx_cpu) = mpsc::channel();
+            let mut scoped_pool = Pool::new(2);
+            scoped_pool.scoped(|scoped| {
+                // GPU
+                scoped.execute(move || {
+                    let results = if n > 0 {
+                        bases
+                            .par_chunks(chunk_size)
+                            .zip(exps.par_chunks(chunk_size))
+                            .zip(self.kernels.par_iter_mut())
+                            .map(|((bases, exps), kern)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                                let mut acc = <G as CurveAffine>::Projective::zero();
+                                let mut jack_chunk = kern.n;
+                                let size_result = std::mem::size_of::<<G as CurveAffine>::Projective>();
+                                if size_result > 144 {
+                                    jack_chunk = (jack_chunk as f64 / 10f64).ceil() as usize;
+                                }
+                                for (bases, exps) in bases.chunks(jack_chunk).zip(exps.chunks(jack_chunk)) {
+                                    let result = kern.multiexp(bases, exps, bases.len())?;
+                                    acc.add_assign(&result);
+                                }
 
-                        Ok(acc)
-                    })
-                    .collect::<Vec<_>>()
-            } else {
-                Vec::new()
-            };
+                                Ok(acc)
+                            })
+                            .collect::<Vec<_>>()
+                    } else {
+                        Vec::new()
+                    };
 
-            let cpu_acc = cpu_multiexp(
-                &pool,
-                (Arc::new(cpu_bases.to_vec()), 0),
-                FullDensity,
-                Arc::new(cpu_exps.to_vec()),
-                &mut None,
-            );
+                    tx_gpu.send(results).unwrap();
+
+                });
+                // CPU
+                scoped.execute(move || {
+                    let cpu_acc = cpu_multiexp(
+                        &pool,
+                        (Arc::new(cpu_bases.to_vec()), 0),
+                        FullDensity,
+                        Arc::new(cpu_exps.to_vec()),
+                        &mut None,
+                    );
+                    let cpu_r = cpu_acc.wait().unwrap();
+
+                    tx_cpu.send(cpu_r).unwrap();
+                });
+            });
+
+            // waiting results...
+            let results = rx_gpu.recv().unwrap();
+            let cpu_r = rx_cpu.recv().unwrap();
 
             for r in results {
                 acc.add_assign(&r?);
             }
-
-            acc.add_assign(&cpu_acc.wait().unwrap());
+            acc.add_assign(&cpu_r);
+            
             Ok(acc)
         })
     }

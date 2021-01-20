@@ -57,11 +57,11 @@ pub fn test_parallel_prover() {
 
     // Higher prio circuit
     let c = DummyDemo {
-        interations: 10_000,
+        interations: 1_000,
     };
     // Lower prio circuit
     let c2 = DummyDemo {
-        interations: 500_000,
+        interations: 5_000,
     };
 
     let params = generate_random_parameters::<Bls12, _, _>(c.clone(), rng).unwrap();

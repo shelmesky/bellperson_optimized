@@ -282,6 +282,31 @@ where
         })
 }
 
+// density map filter for exponents
+pub fn density_filter<Q, D, G, S>(
+    bases: S,
+    density_map: D,
+    exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>
+) ->  (Arc<Vec<G>>, Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>, usize, usize)
+where
+    for<'a> &'a Q: QueryDensity,
+    D: Send + Sync + 'static + Clone + AsRef<Q>,
+    G: CurveAffine,
+    G::Engine: crate::bls::Engine,
+    S: SourceBuilder<G>,
+{
+    let mut exps = vec![exponents[0]; exponents.len()];
+    let mut n = 0;
+    for (&e, d) in exponents.iter().zip(density_map.as_ref().iter()) {
+        if d {
+            exps[n] = e;
+            n += 1;
+        }
+    }
+    let (bss, skip) = bases.get();
+    (bss,Arc::new(exps),skip,n)
+}
+
 /// Perform multi-exponentiation. The caller is responsible for ensuring the
 /// query size is the same as the number of exponents.
 pub fn multiexp<Q, D, G, S>(
@@ -308,11 +333,11 @@ where
                     n += 1;
                 }
             }
-
             let (bss, skip) = bases.clone().get();
-            k.multiexp(pool, bss, Arc::new(exps.clone()), skip, n)
+            k.multiexp(pool, bss, Arc::new(exps), skip, n)
         }) {
-            return Waiter::done(Ok(p));
+            let result = Waiter::done(Ok(p));
+            return result
         }
     }
 
@@ -335,12 +360,65 @@ where
         // Do not give the control back to the caller till the
         // multiexp is done. We may want to reacquire the GPU again
         // between the multiexps.
-        let result = result.wait();
-        Waiter::done(result)
+        Waiter::done(result.wait())
     }
     #[cfg(not(feature = "gpu"))]
     result
 }
+
+
+// fulldensity
+pub fn multiexp_fulldensity<Q, D, G, S>(
+    pool: &Worker,
+    bases: S,
+    _density_map: D,
+    exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+    kern: &mut Option<gpu::LockedMultiexpKernel<G::Engine>>,
+) -> Waiter<Result<<G as CurveAffine>::Projective, SynthesisError>>
+where
+    for<'a> &'a Q: QueryDensity,
+    D: Send + Sync + 'static + Clone + AsRef<Q>,
+    G: CurveAffine,
+    G::Engine: crate::bls::Engine,
+    S: SourceBuilder<G>,
+{
+    if let Some(ref mut kern) = kern {
+        if let Ok(p) = kern.with(|k: &mut gpu::MultiexpKernel<G::Engine>| {
+            let (bss, skip) = bases.clone().get();
+            k.multiexp(pool, bss, exponents.clone(), skip, exponents.len())
+        }) {
+            let result = Waiter::done(Ok(p));
+            return result
+        }
+    }
+    Waiter::done(Err(SynthesisError::GPUError(gpu::GPUError::GPUDisabled)))
+}
+
+
+// skipdensity
+pub fn multiexp_skipdensity<G>(
+    pool: &Worker,
+    bss: Arc<Vec<G>>,
+    exps: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+    skip: usize,
+    n: usize,
+    kern: &mut Option<gpu::LockedMultiexpKernel<G::Engine>>,
+) -> Waiter<Result<<G as CurveAffine>::Projective, SynthesisError>>
+where
+    G: CurveAffine,
+    G::Engine: crate::bls::Engine,
+{
+    if let Some(ref mut kern) = kern {
+        if let Ok(p) = kern.with(|k: &mut gpu::MultiexpKernel<G::Engine>| {
+            k.multiexp(pool, bss.clone(), exps.clone(), skip, n)
+        }) {
+            let result = Waiter::done(Ok(p));
+            return result
+        }
+    }
+    Waiter::done(Err(SynthesisError::GPUError(gpu::GPUError::GPUDisabled)))
+}
+
 
 #[cfg(any(feature = "pairing", feature = "blst"))]
 #[test]
@@ -418,7 +496,7 @@ pub fn gpu_multiexp_consistency() {
     let _ = env_logger::try_init();
     gpu::dump_device_list();
 
-    const MAX_LOG_D: usize = 16;
+    const MAX_LOG_D: usize = 20;
     const START_LOG_D: usize = 10;
     let mut kern = Some(gpu::LockedMultiexpKernel::<Bls12>::new(MAX_LOG_D, false));
     let pool = Worker::new();
@@ -432,7 +510,7 @@ pub fn gpu_multiexp_consistency() {
         bases = [bases.clone(), bases.clone()].concat();
     }
 
-    for log_d in START_LOG_D..=MAX_LOG_D {
+    for log_d in START_LOG_D..(MAX_LOG_D + 1) {
         let g = Arc::new(bases.clone());
 
         let samples = 1 << log_d;
