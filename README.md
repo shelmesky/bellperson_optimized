@@ -37,6 +37,16 @@ RUSTFLAGS="-C target-cpu=native -g" FFI_BUILD_FROM_SOURCE=1 make clean all
 
 > enjoy it!
 
+# DONATION
+
+Jennifer suggested that I should have a donation wallet.
+
+fils are welcome if you like.
+
+my wallet addr:
+
+> f1ki5mgbm4cyz43oamnbvv5bjrqdsvkphuxxs2h4a
+
 
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
