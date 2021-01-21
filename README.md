@@ -11,7 +11,7 @@ From ZQBC
 - get the code:
 
 ```bash
-cd ../lotus_code_path && git clone https://github.com/jackoelv/bellperson.git && git checkout 2080Ti
+cd ../lotus_code_path && git clone https://github.com/jackoelv/bellperson.git && git checkout origin/2080Ti
 ```
 - patch the filecoin-ffi submodule
 
