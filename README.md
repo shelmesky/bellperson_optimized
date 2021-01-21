@@ -7,6 +7,37 @@
 
 From ZQBC
 
+# HOWTO
+- get the code:
+
+```bash
+cd ../lotus_code_path && git clone https://github.com/jackoelv/bellperson.git && git checkout 2080Ti
+```
+- patch the filecoin-ffi submodule
+
+```bash
+cd ./lotus_code_path && git submodule update --init --recursive
+cd ./lotus_code_path/extern/filecoin-ffi/rust/
+vi Cargo.toml 
+```
+> in the end of the file add patch code:
+
+```rust
+[patch.crates-io]
+bellperson = { path = "../../../../bellperson" }
+```
+- then update cargo package
+
+```bash
+cd ./lotus_code_path/extern/filecoin-ffi/rust/
+cargo update
+cd ./lotus_code_path
+RUSTFLAGS="-C target-cpu=native -g" FFI_BUILD_FROM_SOURCE=1 make clean all
+```
+
+> enjoy it!
+
+
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
 > This is a fork of the great [bellman](https://github.com/zkcrypto/bellman) library.
