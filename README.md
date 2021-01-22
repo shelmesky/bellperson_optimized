@@ -1,3 +1,70 @@
+# C2 in 880s tested.
+- this is special for 2080Ti, may not work with any other GPU cards. because different gpu have different cuda-cores and mem.
+- some calculations with cpus change to parallel.
+- change params special for 2080Ti. because it has 68 SMs and 64 SP per SM.
+- we are going on with more optimizations. May 100s even more can be saved.
+- Team work requests are welcome!
+
+From ZQBC
+
+# HOWTO
+- get the code:
+
+```bash
+cd ../lotus_code_path && git clone https://github.com/jackoelv/bellperson.git && git checkout origin/2080Ti
+```
+- patch the filecoin-ffi submodule
+
+```bash
+cd ./lotus_code_path && git submodule update --init --recursive
+cd ./lotus_code_path/extern/filecoin-ffi/rust/
+vi Cargo.toml 
+```
+> in the end of the file add patch code:
+
+```rust
+[patch.crates-io]
+bellperson = { path = "../../../../bellperson" }
+```
+- then update cargo package
+
+```bash
+cd ./lotus_code_path/extern/filecoin-ffi/rust/
+cargo update
+cd ./lotus_code_path
+RUSTFLAGS="-C target-cpu=native -g" FFI_BUILD_FROM_SOURCE=1 make clean all
+```
+
+> enjoy it!
+
+# DONATION
+
+Jennifer suggested that I should have a donation wallet.
+
+fils are welcome if you like.
+
+my wallet addr:
+
+> f1ki5mgbm4cyz43oamnbvv5bjrqdsvkphuxxs2h4a
+
+# FAQ
+
+> openCL error
+
+ if you see error like this:
+```bash
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)
+```
+ because the MEM needs exceeds maxinum gpu mem. I am looking for new solution to caculate the suitable mem needs.
+a temporary solution is change the variable ：
+- src/gpu/multiexp.rs
+```rust
+324: jack_chunk = (jack_chunk as f64 / 10f64).ceil() as usize;
+```
+ you can increase `10f64` to `11f64` even bigger to reduce mem needs.
+ I am trying a new solution which change window_size for lower cost of mem. 
+ In prover.rs, b_g2_aux caculation size of <<G as CurveAffine>::Projective> is doubled,  so with same window_size and num_groups, mem needs increase fast.  
+
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
 > This is a fork of the great [bellman](https://github.com/zkcrypto/bellman) library.
