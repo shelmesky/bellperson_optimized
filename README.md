@@ -47,6 +47,23 @@ my wallet addr:
 
 > f1ki5mgbm4cyz43oamnbvv5bjrqdsvkphuxxs2h4a
 
+# FAQ
+
+> openCL error
+
+ if you see error like this:
+```bash
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)
+```
+ because the MEM needs exceeds maxinum gpu mem. I am looking for new solution to caculate the suitable mem needs.
+a temporary solution is change the variable ：
+- src/gpu/multiexp.rs
+```rust
+324: jack_chunk = (jack_chunk as f64 / 10f64).ceil() as usize;
+```
+ you can increase `10f64` to `11f64` even bigger to reduce mem needs.
+ I am trying a new solution which change window_size for lower cost of mem. 
+ In prover.rs, b_g2_aux caculation size of <<G as CurveAffine>::Projective> is doubled,  so with same window_size and num_groups, mem needs increase fast.  
 
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
