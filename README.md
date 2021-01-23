@@ -1,3 +1,6 @@
+# Add 3090 Support
+- the branch 3090 works now.
+- need team work to finish the code to save more time.
 # C2 in 880s tested.
 - this is special for 2080Ti, may not work with any other GPU cards. because different gpu have different cuda-cores and mem.
 - some calculations with cpus change to parallel.

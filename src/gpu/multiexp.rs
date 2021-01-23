@@ -11,15 +11,14 @@ use log::{error, info};
 use rust_gpu_tools::*;
 use std::any::TypeId;
 use std::sync::Arc;
-use std::time::Instant;
 
 use std::sync::mpsc;
 extern crate scoped_threadpool;
 use scoped_threadpool::Pool;
 
-const MAX_WINDOW_SIZE: usize = 11;
+const MAX_WINDOW_SIZE: usize = 12;
 const LOCAL_WORK_SIZE: usize = 256;
-const MEMORY_PADDING: f64 = 0.2f64; // Let 20% of GPU memory be free
+const MEMORY_PADDING: f64 = 0.1f64; // Let 20% of GPU memory be free
 
 pub fn get_cpu_utilization() -> f64 {
     use std::env;
@@ -52,7 +51,7 @@ where
 
 fn calc_num_groups(core_count: usize, num_windows: usize) -> usize {
     // Observations show that we get the best performance when num_groups * num_windows ~= 2 * CUDA_CORES
-    4 * core_count / num_windows
+    2 * core_count / num_windows
 }
 
 // fn calc_window_size(n: usize, exp_bits: usize, core_count: usize) -> usize {
@@ -79,7 +78,7 @@ fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usi
     // n = e^window_size * window_size * 2 * core_count / exp_bits
     (((max_window_size as f64).exp() as f64)
         * (max_window_size as f64)
-        * 4f64
+        * 2f64
         * (core_count as f64)
         / (exp_bits as f64))
         .ceil() as usize
@@ -93,7 +92,7 @@ where
     let exp_size = exp_size::<E>();
     let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
     ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
-        - (4 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
+        - (2 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
         / (aff_size + exp_size)
 }
 
@@ -110,10 +109,10 @@ where
 
         let exp_bits = exp_size::<E>() * 8;
         let core_count = utils::get_core_count(&d);
-        let mem = d.memory();
-        let max_n = calc_chunk_size::<E>(mem, core_count);
-        let best_n = calc_best_chunk_size(MAX_WINDOW_SIZE, core_count, exp_bits);
-        let n = std::cmp::min(max_n, best_n);
+        // let mem = d.memory();
+        // let max_n = calc_chunk_size::<E>(mem, core_count);
+        // let best_n = calc_best_chunk_size(MAX_WINDOW_SIZE, core_count, exp_bits);
+        let n = 67108864;//std::cmp::min(max_n, best_n);
 
         Ok(SingleMultiexpKernel {
             program: opencl::Program::from_opencl(d, &src)?,
@@ -129,6 +128,7 @@ where
         bases: &[G],
         exps: &[<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr],
         n: usize,
+        jack_windows_size: usize,
     ) -> GPUResult<<G as CurveAffine>::Projective>
     where
         G: CurveAffine,
@@ -139,10 +139,10 @@ where
 
         let exp_bits = exp_size::<E>() * 8;
         // let window_size = calc_window_size(n as usize, exp_bits, self.core_count);
-        let window_size = MAX_WINDOW_SIZE;
-        let num_windows = ((exp_bits as f64) / (window_size as f64)).ceil() as usize;
+        let window_size = jack_windows_size;
+        let num_windows = ((exp_bits as f64) / (jack_windows_size as f64)).ceil() as usize;
         let num_groups = calc_num_groups(self.core_count, num_windows);
-        let bucket_len = 1 << window_size;
+        let bucket_len = 1 << jack_windows_size;
 
         // let size1 = std::mem::size_of::<G>();
         // let size2 = std::mem::size_of::<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>();
@@ -156,6 +156,15 @@ where
         // Each group will have `num_windows` threads and as there are `num_groups` groups, there will
         // be `num_groups` * `num_windows` threads in total.
         // Each thread will use `num_groups` * `num_windows` * `bucket_len` buckets.
+        let size1 = std::mem::size_of::<G>();
+        let size2 = std::mem::size_of::<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>();
+        let size3 = std::mem::size_of::<<G as CurveAffine>::Projective>();
+        let mem1 = size1 * n;
+        let mem2 = size2 * n;
+        let mem3 = size3 * 2 * self.core_count * bucket_len;
+        let mem4 = size3 * 2 * self.core_count;
+        info!("GABEDEBUG: <G> size:{}, <PrimeField> size:{}, <Projective> size:{}", size1, size2, size3);
+        info!("GABEDEBUG: GPU mem need:{}byte, {}Mbyte", mem1 + mem2 + mem3 + mem4, (mem1 + mem2 + mem3 + mem4)/(1024*1024));
 
         let mut base_buffer = self.program.create_buffer::<G>(n)?;
         base_buffer.write_from(0, bases)?;
@@ -165,10 +174,10 @@ where
         exp_buffer.write_from(0, exps)?;
         let bucket_buffer = self
             .program
-            .create_buffer::<<G as CurveAffine>::Projective>(4 * self.core_count * bucket_len)?;
+            .create_buffer::<<G as CurveAffine>::Projective>(2 * self.core_count * bucket_len)?;
         let result_buffer = self
             .program
-            .create_buffer::<<G as CurveAffine>::Projective>(4 * self.core_count)?;
+            .create_buffer::<<G as CurveAffine>::Projective>(2 * self.core_count)?;
 
         // Make global work size divisible by `LOCAL_WORK_SIZE`
         let mut global_work_size = num_windows * num_groups;
@@ -297,7 +306,7 @@ where
         let n = n - cpu_n;
         let (cpu_bases, bases) = bases.split_at(cpu_n);
         let (cpu_exps, exps) = exps.split_at(cpu_n);
-        let chunk_size = ((n as f64) / (num_devices as f64)).ceil() as usize;
+        let chunk_size = 67108864;//((n as f64) / (num_devices as f64)).ceil() as usize;
 
         crate::multicore::THREAD_POOL.install(|| {
             use rayon::prelude::*;
@@ -318,13 +327,14 @@ where
                             .zip(self.kernels.par_iter_mut())
                             .map(|((bases, exps), kern)| -> Result<<G as CurveAffine>::Projective, GPUError> {
                                 let mut acc = <G as CurveAffine>::Projective::zero();
-                                let mut jack_chunk = kern.n;
+                                let jack_chunk_3090 = 67108864;
+                                let mut jack_window_size = 12;
                                 let size_result = std::mem::size_of::<<G as CurveAffine>::Projective>();
                                 if size_result > 144 {
-                                    jack_chunk = (jack_chunk as f64 / 10f64).ceil() as usize;
+                                    jack_window_size = 10;
                                 }
-                                for (bases, exps) in bases.chunks(jack_chunk).zip(exps.chunks(jack_chunk)) {
-                                    let result = kern.multiexp(bases, exps, bases.len())?;
+                                for (bases, exps) in bases.chunks(jack_chunk_3090).zip(exps.chunks(jack_chunk_3090)) {
+                                    let result = kern.multiexp(bases, exps, bases.len(),jack_window_size)?;
                                     acc.add_assign(&result);
                                 }
 
@@ -361,7 +371,7 @@ where
                 acc.add_assign(&r?);
             }
             acc.add_assign(&cpu_r);
-            
+
             Ok(acc)
         })
     }
