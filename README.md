@@ -1,6 +1,18 @@
 # Add 3090 Support
 - the branch 3090 works now.
 - need team work to finish the code to save more time.
+
+> to do list:
+1. prover.rs: 425 change to run multi fft on one 3090 card.
+2. provers.rs: 500, density_filter change to parallel.
+3. provers.rs:305, synthesize function change to multi cpu parallel.
+4. provers.rs:425 change to run multi gpu( later I will upload a multi gpu branch, change a little can work.)
+5. gpu params opimization: src/gpu/multiexp.rs 
+    52:calc_num_groups
+    76:calc_best_chunk_size
+    87:calc_chunk_size
+6. change openCL to CUDA.
+
 # C2 in 880s tested.
 - this is special for 2080Ti, may not work with any other GPU cards. because different gpu have different cuda-cores and mem.
 - some calculations with cpus change to parallel.
