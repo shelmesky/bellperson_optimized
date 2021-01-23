@@ -1,4 +1,5 @@
 # Add 3090 Support
+- 500s+ when after all optimization, should be 400s+
 - the branch 3090 works now.
 - need team work to finish the code to save more time.
 
@@ -80,6 +81,7 @@ a temporary solution is change the variable ：
  I am trying a new solution which change window_size for lower cost of mem. 
  In prover.rs, b_g2_aux caculation size of <<G as CurveAffine>::Projective> is doubled,  so with same window_size and num_groups, mem needs increase fast.  
 
+> attention: this code removed from 3090 branch.
 # bellperson [![Crates.io](https://img.shields.io/crates/v/bellperson.svg)](https://crates.io/crates/bellperson)
 
 > This is a fork of the great [bellman](https://github.com/zkcrypto/bellman) library.
