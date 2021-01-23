@@ -40,6 +40,9 @@ GPU |      |-------------------->|
 
 ## 目前任务清单
 
+1. 自助认领任务，添加昵称到任务清单下面
+2. `pull requests`
+
 ### [1] `build provers` 并发优化
 
 ```rs
@@ -62,6 +65,11 @@ let mut provers = circuits
     .collect::<Result<Vec<_>, _>>()?;
 info!("ZQ: build provers  end: {:?}", now.elapsed());
 ```
+
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
 
 ### [2] `a_s` 优化 1
 
@@ -90,6 +98,11 @@ c.coset_fft(&worker, &mut fft_kern)?;
 info!("ZQ: a_s end: {:?}", now.elapsed());
 drop(fft_kern);
 ```
+
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
 
 ### [3] `a_s` 优化 2
 
@@ -143,6 +156,11 @@ let (
 info!("ZQ: inputs end: {:?}", now.elapsed());
 ```
 
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
+
 ### [5] GPU 参数调整
 
 根据不同的 GPU 参数，调整参数
@@ -151,8 +169,28 @@ info!("ZQ: inputs end: {:?}", now.elapsed());
 - 76:`calc_best_chunk_size`
 - 87:`calc_chunk_size`
 
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
+
 ### [6] opencl 更换 CUDA 库
+
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
 
 ### [7] 算法优化
 
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
+
 ### [8] 不同显卡测试
+
+开发人员名单：
+
+- （微信昵称，自助添加认领）
+- 、
