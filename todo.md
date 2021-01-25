@@ -172,7 +172,7 @@ info!("ZQ: inputs end: {:?}", now.elapsed());
 开发人员名单：
 
 - （微信昵称，自助添加认领）
-- 、
+- 我是鱼饵
 
 ### [6] opencl 更换 CUDA 库
 
@@ -193,4 +193,4 @@ info!("ZQ: inputs end: {:?}", now.elapsed());
 开发人员名单：
 
 - （微信昵称，自助添加认领）
-- 、
+- 我是鱼饵
