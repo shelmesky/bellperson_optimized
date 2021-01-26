@@ -1,0 +1,542 @@
+nohup: ignoring input
+2021-01-26T22:06:56.908+0800	[34mINFO[0m	lotus-bench	lotus-bench/main.go:102	Starting lotus-bench
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-0-0-sha256_hasher-ecd683648512ab1765faa2a5f14bab48f676e633467f0aa8aad4b55dcb0652bb.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-5294475db5237a2e83c3e52fd6c2b03859a1831d45ed08c4f35dbf9a803165a9.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-0-0-sha256_hasher-032d3138d22506ec0082ed72b2dcba18df18477904e35bafee82b3793b06832f.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-3ea05428c9d11689f23529cde32fd30aabd50f7d2c93657c1d3650bca3e8ea9e.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-2-sha256_hasher-96f1b4a04c5c51e4759bbf224bbc2ef5a42c7100f16ec0637123f16a845ddfb2.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-50c7368dea9593ed0989e70974d28024efa9d156d585b7eea1be22b2e753f331.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-0-0-sha256_hasher-6babf46ce344ae495d558e7770a585b2382d54f225af8ed0397b8be7c3fcd472.vk is ok
+2021-01-26T22:06:56.910+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-7d739b8cf60f1b0709eeebee7730e297683552e4b69cab6984ec0285663c5781.vk is ok
+2021-01-26T22:06:56.910+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-0-559e581f022bb4e4ec6e719e563bf0e026ad6de42e56c18714a2c692b1b88d7e.vk is ok
+2021-01-26T22:06:56.910+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.vk is ok
+2021-01-26T22:06:56.909+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-2-b62098629d07946e9028127e70295ed996fe3ed25b0f9f88eb610a0ab4385a3c.vk is ok
+2021-01-26T22:06:56.910+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-0170db1f394b35d995252228ee359194b13199d259380541dc529fb0099096b0.vk is ok
+2021-01-26T22:06:56.910+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-0-0-0cfb4f178bbb71cf2ecfcd42accce558b27199ab4fb59cb78f2483fe21ef36d9.vk is ok
+2021-01-26T22:06:56.917+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-0-0377ded656c6f524f1618760bffe4e0a1c51d5a70c4509eedae8a27555733edc.vk is ok
+2021-01-26T22:06:56.917+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-2-2627e4006b67f99cef990c0a47d5426cb7ab0a0ad58fc1061547bf2d28b09def.vk is ok
+2021-01-26T22:06:57.202+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-0-559e581f022bb4e4ec6e719e563bf0e026ad6de42e56c18714a2c692b1b88d7e.params is ok
+2021-01-26T22:08:02.887+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.params is ok
+2021-01-26T22:08:20.874+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:138	Parameter file /home/server/filecoin-proof-parameters/v28-proof-of-spacetime-fallback-merkletree-poseidon_hasher-8-8-0-0377ded656c6f524f1618760bffe4e0a1c51d5a70c4509eedae8a27555733edc.params is ok
+2021-01-26T22:08:20.874+0800	[34mINFO[0m	build	go-paramfetch@v0.0.2-0.20200701152213-3e0f0afdc261/paramfetch.go:162	parameter and key-fetching complete
+2021-01-26T22:08:20.874+0800	[34mINFO[0m	lotus-bench	lotus-bench/main.go:739	[0] Generating PoRep for sector (2)
+2021-01-26T22:08:21.112 INFO filcrypto::proofs::api > seal_commit_phase2: start
+2021-01-26T22:08:21.198 INFO filecoin_proofs::api::seal > seal_commit_phase2:start: SectorId(0)
+2021-01-26T22:08:21.198 INFO filecoin_proofs::caches > trying parameters memory cache for: STACKED[34359738368]
+2021-01-26T22:08:21.198 INFO filecoin_proofs::caches > no params in memory cache for STACKED[34359738368]
+2021-01-26T22:08:21.198 INFO storage_proofs_core::parameter_cache > parameter set identifier for cache: layered_drgporep::PublicParams{ graph: stacked_graph::StackedGraph{expansion_degree: 8 base_graph: drgraph::BucketGraph{size: 1073741824; degree: 6; hasher: poseidon_hasher} }, challenges: LayerChallenges { layers: 11, max_count: 18 }, tree: merkletree-poseidon_hasher-8-8-0 }
+2021-01-26T22:08:21.199 INFO storage_proofs_core::parameter_cache > ensuring that all ancestor directories for: "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.params" exist
+2021-01-26T22:08:21.199 INFO storage_proofs_core::parameter_cache > checking cache_path: "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.params" for parameters
+2021-01-26T22:08:23.955 INFO storage_proofs_core::parameter_cache > read parameters from cache "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.params" 
+2021-01-26T22:08:23.956 INFO filecoin_proofs::api::seal > got groth params (34359738368) while sealing
+2021-01-26T22:08:23.956 INFO filecoin_proofs::api::seal > snark_proof:start
+2021-01-26T22:08:23.976 INFO bellperson::groth16::prover > clz----------
+2021-01-26T22:08:23.976 INFO bellperson::groth16::prover > Bellperson 0.12.3 is being usedclz-------------------!
+123
+2021-01-26T22:08:23.976 INFO bellperson::groth16::prover > clz----------
+123
+2021-01-26T22:08:23.980 INFO bellperson::groth16::prover > ZQ: build provers start
+2021-01-26T22:10:09.647 INFO bellperson::groth16::prover > ZQ: build provers  end: 105.66680805s
+2021-01-26T22:10:09.647 INFO bellperson::groth16::prover > ZQ: starting proof timer
+2021-01-26T22:10:09.647 INFO bellperson::groth16::prover > ZQ: get params start
+2021-01-26T22:10:40.935 INFO bellperson::groth16::prover > ZQ: waiting params...
+2021-01-26T22:10:40.935 INFO bellperson::groth16::prover > ZQ: get params end: 31.287780189s
+2021-01-26T22:10:40.935 INFO bellperson::groth16::prover > ZQ: a_s start
+2021-01-26T22:10:41.270 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.270 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.270 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.288 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.288 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.288 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.288 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.288 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.288 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 INFO bellperson::gpu::locks > GPU is available for FFT!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:41.317 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:10:42.272 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.272 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.272 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.331 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.331 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.331 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.339 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.339 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.339 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.348 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.348 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.348 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.352 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:10:42.357 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:10:42.372 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.372 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.372 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.502 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:10:42.504 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.504 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.504 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.624 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:42.624 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:42.624 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:42.628 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:10:42.632 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:10:45.602 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:45.602 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:45.602 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:45.662 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:45.662 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:45.662 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:45.831 INFO bellperson::gpu::fft > FFT: 1 working device(s) selected.
+2021-01-26T22:10:45.831 INFO bellperson::gpu::fft > FFT: Device 0: GeForce RTX 3090
+2021-01-26T22:10:45.831 INFO bellperson::domain > GPU FFT kernel instantiated!
+2021-01-26T22:10:45.879 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:11:08.966 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:11:09.292 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:12:40.959 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:12:48.734 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:13:10.154 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:13:32.875 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:13:39.214 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:14:14.515 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:14:19.261 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:14:25.277 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:14:47.371 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:14:48.797 WARN bellperson::gpu::locks > GPU FFT failed! Falling back to CPU... Error: OpenCL Error: Ocl Error: 
+
+################################ OPENCL ERROR ############################### 
+
+Error executing function: clEnqueueWriteBuffer  
+
+Status error code: CL_MEM_OBJECT_ALLOCATION_FAILURE (-4)  
+
+Please visit the following url for more information: 
+
+https://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueWriteBuffer.html#errors  
+
+############################################################################# 
+
+2021-01-26T22:15:14.159 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:15:19.060 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:15:19.682 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:15:33.470 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:15:33.943 INFO bellperson::groth16::prover > ZQ: a_s end: 293.007733293s
+2021-01-26T22:15:33.943 INFO bellperson::groth16::prover > ZQ: h_s start
+2021-01-26T22:15:33.943 INFO bellperson::gpu::locks > GPU is available for Multiexp!
+2021-01-26T22:15:33.943 DEBUG bellperson::gpu::locks > Acquiring GPU lock...
+2021-01-26T22:15:33.943 DEBUG bellperson::gpu::locks > GPU lock acquired!
+2021-01-26T22:15:33.945 INFO bellperson::gpu::utils > Adding "GeForce RTX 3090" to GPU list with 10496 CUDA cores.
+2021-01-26T22:15:34.053 INFO bellperson::gpu::multiexp > Multiexp: 1 working device(s) selected. (CPU utilization: 0)
+2021-01-26T22:15:34.053 INFO bellperson::gpu::multiexp > Multiexp: Device 0: GeForce RTX 3090 (Chunk-size: 67108864)
+2021-01-26T22:15:34.053 INFO bellperson::multiexp > GPU Multiexp kernel instantiated!
+2021-01-26T22:15:34.053 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:15:34.053 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:15:39.136 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:15:39.136 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:15:44.964 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:15:44.964 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:15:50.144 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:15:50.144 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:15:55.993 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:15:55.993 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:01.126 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:01.126 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:16:06.939 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:06.940 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:12.075 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:12.075 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:16:17.906 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:17.906 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:23.043 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:23.043 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:16:28.863 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:28.863 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:34.036 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:34.036 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:16:39.842 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:39.842 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:45.003 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:45.003 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:16:50.824 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:50.824 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:16:55.979 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:16:55.979 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:17:01.816 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:01.816 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:07.014 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:07.014 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:17:12.861 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:12.861 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:18.095 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:18.095 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413624byte, 20514Mbyte
+2021-01-26T22:17:24.014 INFO bellperson::groth16::prover > ZQ: h_s end: 110.071703162s
+2021-01-26T22:17:24.014 INFO bellperson::groth16::prover > ZQ: l_s start
+2021-01-26T22:17:24.015 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:24.015 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:27.401 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:27.401 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:17:31.141 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:31.141 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:34.711 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:34.711 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:17:38.388 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:38.388 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:42.009 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:42.009 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:17:45.753 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:45.753 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:49.304 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:49.304 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:17:52.980 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:52.980 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:17:56.551 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:17:56.551 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:00.221 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:00.221 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:03.781 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:03.781 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:07.451 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:07.451 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:11.000 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:11.000 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:14.674 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:14.674 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:18.228 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:18.228 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:21.900 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:21.900 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:25.495 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:25.495 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:29.235 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:29.235 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:32.782 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:32.782 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20960908200byte, 19989Mbyte
+2021-01-26T22:18:36.452 INFO bellperson::groth16::prover > ZQ: l_s end: 72.43740034s
+2021-01-26T22:18:36.452 INFO bellperson::groth16::prover > ZQ: inputs start
+2021-01-26T22:18:36.452 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:36.452 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:18:38.789 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:38.789 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:18:41.926 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:41.926 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:18:45.689 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:45.689 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:18:47.504 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:47.504 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:18:49.567 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:18:49.567 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:18:51.199 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:18:51.199 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:18:56.382 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:56.382 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:18:58.343 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:18:58.343 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:19:01.495 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:01.495 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:19:05.261 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:05.261 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:19:07.075 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:07.075 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:19:09.133 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:09.133 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:19:10.749 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:10.750 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:19:15.981 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:15.981 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:19:17.913 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:17.913 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:19:21.049 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:21.049 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:19:24.814 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:24.814 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:19:26.626 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:26.626 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:19:28.686 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:28.686 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:19:30.300 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:30.301 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:19:35.491 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:35.491 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:19:37.446 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:37.446 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:19:40.600 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:40.600 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:19:44.363 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:44.363 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:19:46.168 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:46.168 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:19:48.256 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:48.257 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:19:49.862 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:19:49.862 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:19:55.061 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:55.061 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:19:57.016 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:19:57.016 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:20:00.141 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:00.141 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:20:03.902 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:03.902 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:20:05.709 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:05.709 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:20:07.785 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:07.786 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:20:09.403 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:09.403 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:20:14.605 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:14.605 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:20:16.560 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:16.560 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:20:19.710 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:19.711 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:20:23.473 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:23.473 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:20:25.277 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:25.277 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:20:27.340 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:27.340 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:20:28.974 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:28.974 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:20:34.182 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:34.182 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:20:36.147 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:36.147 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:20:39.291 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:39.291 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:20:43.054 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:43.054 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:20:44.860 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:44.860 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:20:46.940 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:46.940 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:20:48.559 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:20:48.559 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:20:53.787 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:53.787 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:20:55.728 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:55.728 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:20:58.880 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:20:58.880 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:21:02.642 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:02.642 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:21:04.443 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:04.443 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:21:06.523 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:06.523 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:21:08.129 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:08.129 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:21:13.318 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:13.318 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:21:15.270 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:15.270 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:21:18.409 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:18.409 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:21:22.170 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:22.170 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:21:23.980 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:23.980 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:21:26.059 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:26.059 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:21:27.670 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:27.670 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:21:32.855 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:32.855 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384652864byte, 11810Mbyte
+2021-01-26T22:21:34.812 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:34.812 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:21511413760byte, 20514Mbyte
+2021-01-26T22:21:37.941 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:37.941 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:20904250464byte, 19935Mbyte
+2021-01-26T22:21:41.704 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:41.704 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:12384608392byte, 11810Mbyte
+2021-01-26T22:21:43.517 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:104, <PrimeField> size:32, <Projective> size:144
+2021-01-26T22:21:43.517 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:16887878472byte, 16105Mbyte
+2021-01-26T22:21:45.582 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:45.582 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:6196838632byte, 5909Mbyte
+2021-01-26T22:21:47.205 INFO bellperson::gpu::multiexp > GABEDEBUG: <G> size:200, <PrimeField> size:32, <Projective> size:288
+2021-01-26T22:21:47.205 INFO bellperson::gpu::multiexp > GABEDEBUG: GPU mem need:13878887592byte, 13235Mbyte
+2021-01-26T22:21:52.333 INFO bellperson::groth16::prover > ZQ: inputs end: 195.881058476s
+2021-01-26T22:21:52.380 DEBUG bellperson::gpu::locks > GPU lock released!
+2021-01-26T22:21:52.380 INFO bellperson::groth16::prover > ZQ: proofs start
+2021-01-26T22:21:52.403 INFO bellperson::groth16::prover > ZQ: proofs end: 22.644089ms
+2021-01-26T22:21:52.403 INFO bellperson::groth16::prover > ZQ: prover time: 702.756016879s
+2021-01-26T22:21:54.334 INFO filecoin_proofs::api::seal > snark_proof:finish
+2021-01-26T22:21:54.335 INFO filecoin_proofs::api::seal > verify_seal:start: SectorId(0)
+2021-01-26T22:21:54.335 INFO filecoin_proofs::caches > trying parameters memory cache for: STACKED[34359738368]-verifying-key
+2021-01-26T22:21:54.335 INFO filecoin_proofs::caches > no params in memory cache for STACKED[34359738368]-verifying-key
+2021-01-26T22:21:54.335 INFO storage_proofs_core::parameter_cache > parameter set identifier for cache: layered_drgporep::PublicParams{ graph: stacked_graph::StackedGraph{expansion_degree: 8 base_graph: drgraph::BucketGraph{size: 1073741824; degree: 6; hasher: poseidon_hasher} }, challenges: LayerChallenges { layers: 11, max_count: 18 }, tree: merkletree-poseidon_hasher-8-8-0 }
+2021-01-26T22:21:54.335 INFO storage_proofs_core::parameter_cache > ensuring that all ancestor directories for: "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.vk" exist
+2021-01-26T22:21:54.335 INFO storage_proofs_core::parameter_cache > checking cache_path: "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.vk" for verifying key
+2021-01-26T22:21:54.425 INFO storage_proofs_core::parameter_cache > read verifying key from cache "/home/server/filecoin-proof-parameters/v28-stacked-proof-of-replication-merkletree-poseidon_hasher-8-8-0-sha256_hasher-82a357d2f2ca81dc61bb45f4a762807aedee1b0a53fd6c4e77b46a01bfef7820.vk" 
+2021-01-26T22:21:54.451 INFO filecoin_proofs::api::seal > got verifying key (34359738368) while verifying seal
+2021-01-26T22:21:54.464 INFO filecoin_proofs::api::seal > verify_seal:finish: SectorId(0)
+2021-01-26T22:21:54.464 INFO filecoin_proofs::api::seal > seal_commit_phase2:finish: SectorId(0)
+2021-01-26T22:21:54.464 INFO filcrypto::proofs::api > seal_commit_phase2: finish
+2021-01-26T22:21:54.464+0800	[34mINFO[0m	lotus-bench	lotus-bench/main.go:325	generating winning post candidates
+2021-01-26T22:21:54.464 INFO filcrypto::proofs::api > generate_winning_post_sector_challenge: start
+2021-01-26T22:21:54.464 INFO filecoin_proofs::api::post > generate_winning_post_sector_challenge:start
+2021-01-26T22:21:54.464 INFO filecoin_proofs::api::post > generate_winning_post_sector_challenge:finish
+2021-01-26T22:21:54.464 INFO filcrypto::proofs::api > generate_winning_post_sector_challenge: finish
+2021-01-26T22:21:54.464+0800	[34mINFO[0m	lotus-bench	lotus-bench/main.go:343	computing winning post snark (cold)
+2021-01-26T22:21:54.464+0800	[33mWARN[0m	ffiwrapper	ffiwrapper/verifier_cgo.go:85	failed to acquire sector, skipping	{"sector": {"Miner":1000,"Number":0}, "error": "sector not found"}
+2021-01-26T22:21:54.465+0800	[33mWARN[0m	lotus-bench	lotus-bench/main.go:116	pubSectorToPriv skipped sectors: [{Miner:1000 Number:0}]:
+    github.com/filecoin-project/lotus/extern/sector-storage/ffiwrapper.(*Sealer).GenerateWinningPoSt
+        /data/lotus/extern/sector-storage/ffiwrapper/verifier_cgo.go:27
