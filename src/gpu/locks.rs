@@ -18,7 +18,7 @@ impl GPULock {
     pub fn lock() -> GPULock {
         debug!("Acquiring GPU lock...");
         let f = File::create(tmp_path(GPU_LOCK_NAME)).unwrap();
-        f.lock_exclusive().unwrap();
+        //f.lock_exclusive().unwrap();
         debug!("GPU lock acquired!");
         GPULock(f)
     }
