@@ -9,7 +9,7 @@
 - [FOO]jerry
 - [FOO]Waitting for you ...
 # Add 3080 dev Branch
-- AMD 3970x 12min and can be onchian now.
+- AMD 3970x 12min and can be onchain now.
 - tune based on 3090.
 
 # C2 in 880s tested.
