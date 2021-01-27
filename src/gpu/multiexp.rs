@@ -107,7 +107,7 @@ where
     pub fn create(d: opencl::Device, priority: bool) -> GPUResult<SingleMultiexpKernel<E>> {
         let src = sources::kernel::<E>(d.brand() == opencl::Brand::Nvidia);
 
-        let exp_bits = exp_size::<E>() * 8;
+        // let exp_bits = exp_size::<E>() * 8;
         let core_count = utils::get_core_count(&d);
         // let mem = d.memory();
         // let max_n = calc_chunk_size::<E>(mem, core_count);
