@@ -6,8 +6,11 @@
 - [FOO-TEST]我是鱼饵
 - [FOO-C2]devid
 - [FOO]石头
+- [FOO]jerry
 - [FOO]Waitting for you ...
 # Add 3080 dev Branch
+- AMD 3970x 12min and can be onchain now.
+- tune based on 3090.
 
 # C2 in 880s tested.
 - this is special for 3080, checkout from 3090, many things to do.
