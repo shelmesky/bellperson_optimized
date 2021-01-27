@@ -11,15 +11,15 @@ use log::{error, info};
 use rust_gpu_tools::*;
 use std::any::TypeId;
 use std::sync::Arc;
-use std::time::Instant;
+// use std::time::Instant;
 
 use std::sync::mpsc;
 extern crate scoped_threadpool;
 use scoped_threadpool::Pool;
 
-const MAX_WINDOW_SIZE: usize = 11;
+// const MAX_WINDOW_SIZE: usize = 11;
 const LOCAL_WORK_SIZE: usize = 256;
-const MEMORY_PADDING: f64 = 0.1f64; // Let 20% of GPU memory be free
+// const MEMORY_PADDING: f64 = 0.1f64; // Let 20% of GPU memory be free
 
 pub fn get_cpu_utilization() -> f64 {
     use std::env;
@@ -74,28 +74,28 @@ fn calc_num_groups(core_count: usize, num_windows: usize) -> usize {
 //     MAX_WINDOW_SIZE
 // }
 
-fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usize) -> usize {
-    // Best chunk-size (N) can also be calculated using the same logic as calc_window_size:
-    // n = e^window_size * window_size * 2 * core_count / exp_bits
-    (((max_window_size as f64).exp() as f64)
-        * (max_window_size as f64)
-        * 4f64
-        * (core_count as f64)
-        / (exp_bits as f64))
-        .ceil() as usize
-}
+// fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usize) -> usize {
+//     // Best chunk-size (N) can also be calculated using the same logic as calc_window_size:
+//     // n = e^window_size * window_size * 2 * core_count / exp_bits
+//     (((max_window_size as f64).exp() as f64)
+//         * (max_window_size as f64)
+//         * 4f64
+//         * (core_count as f64)
+//         / (exp_bits as f64))
+//         .ceil() as usize
+// }
 
-fn calc_chunk_size<E>(mem: u64, core_count: usize) -> usize
-where
-    E: Engine,
-{
-    let aff_size = std::mem::size_of::<E::G1Affine>() + std::mem::size_of::<E::G2Affine>();
-    let exp_size = exp_size::<E>();
-    let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
-    ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
-        - (4 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
-        / (aff_size + exp_size)
-}
+// fn calc_chunk_size<E>(mem: u64, core_count: usize) -> usize
+// where
+//     E: Engine,
+// {
+//     let aff_size = std::mem::size_of::<E::G1Affine>() + std::mem::size_of::<E::G2Affine>();
+//     let exp_size = exp_size::<E>();
+//     let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
+//     ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
+//         - (4 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
+//         / (aff_size + exp_size)
+// }
 
 fn exp_size<E: Engine>() -> usize {
     std::mem::size_of::<<E::Fr as ff::PrimeField>::Repr>()
@@ -109,7 +109,7 @@ where
     pub fn create(d: opencl::Device, priority: bool) -> GPUResult<SingleMultiexpKernel<E>> {
         let src = sources::kernel::<E>(d.brand() == opencl::Brand::Nvidia);
 
-        let exp_bits = exp_size::<E>() * 8;
+        // let exp_bits = exp_size::<E>() * 8;
         let core_count = utils::get_core_count(&d);
         // let mem = d.memory();
         // let max_n = calc_chunk_size::<E>(mem, core_count);
@@ -171,16 +171,16 @@ where
         let mem4 = size3 * 2 * self.core_count;
         info!("GABEDEBUG: <G> size:{}, <PrimeField> size:{}, <Projective> size:{}", size1, size2, size3);
         info!("GABEDEBUG: GPU mem need:{}byte, {}Mbyte", mem1 + mem2 + mem3 + mem4, (mem1 + mem2 + mem3 + mem4)/(1024*1024));
-        
-        info!("GABEDEBUG: self.core_count is :{}",  self.core_count);
-        info!("GABEDEBUG: GPU mem1 need:{}Mbyte",  (mem1)/(1024*1024));
-        info!("GABEDEBUG: GPU mem2 need:{}Mbyte",  (mem2)/(1024*1024));
-        info!("GABEDEBUG: GPU mem3 need:{}Mbyte",  (mem3)/(1024*1024));
-        info!("GABEDEBUG: GPU mem4 need:{}Mbyte",  (mem4)/(1024*1024));
+         
+        // info!("GABEDEBUG: self.core_count is :{}",  self.core_count);
+        // info!("GABEDEBUG: GPU mem1 need:{}Mbyte",  (mem1)/(1024*1024));
+        // info!("GABEDEBUG: GPU mem2 need:{}Mbyte",  (mem2)/(1024*1024));
+        // info!("GABEDEBUG: GPU mem3 need:{}Mbyte",  (mem3)/(1024*1024));
+        // info!("GABEDEBUG: GPU mem4 need:{}Mbyte",  (mem4)/(1024*1024));
 
 
 
-//这里的参数2 不能调成4，不然内存完全不够
+
         let mut base_buffer = self.program.create_buffer::<G>(n)?;
         base_buffer.write_from(0, bases)?;
         let mut exp_buffer = self
