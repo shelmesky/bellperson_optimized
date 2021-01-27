@@ -1,5 +1,7 @@
 # Contributors
 - [FOO]jackoelv
+- [FOO]ROy
+- [FOO]Gabe
 - [FOO-Hacker]Jerry
 - [FOO-TEST]我是鱼饵
 - [FOO-C2]devid
