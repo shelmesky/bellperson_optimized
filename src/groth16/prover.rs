@@ -424,7 +424,7 @@ where
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
 
     let a_s = provers
-        .iter_mut()
+        .iter_mut();
         .map(|prover| {
             let mut a =
                 EvaluationDomain::from_coeffs(std::mem::replace(&mut prover.a, Vec::new()))?;
@@ -457,7 +457,7 @@ where
         })
         .collect::<Result<Vec<_>, SynthesisError>>()?;
     info!("ZQ: a_s end: {:?}", now.elapsed());
-    drop(fft_kern)
+    drop(fft_kern);
 
 
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
