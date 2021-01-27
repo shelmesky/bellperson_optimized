@@ -16,9 +16,9 @@ use std::sync::mpsc;
 extern crate scoped_threadpool;
 use scoped_threadpool::Pool;
 
-const MAX_WINDOW_SIZE: usize = 12;
+// const MAX_WINDOW_SIZE: usize = 11;
 const LOCAL_WORK_SIZE: usize = 256;
-const MEMORY_PADDING: f64 = 0.1f64; // Let 20% of GPU memory be free
+// const MEMORY_PADDING: f64 = 0.1f64; // Let 20% of GPU memory be free
 
 pub fn get_cpu_utilization() -> f64 {
     use std::env;
@@ -73,28 +73,28 @@ fn calc_num_groups(core_count: usize, num_windows: usize) -> usize {
 //     MAX_WINDOW_SIZE
 // }
 
-fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usize) -> usize {
-    // Best chunk-size (N) can also be calculated using the same logic as calc_window_size:
-    // n = e^window_size * window_size * 2 * core_count / exp_bits
-    (((max_window_size as f64).exp() as f64)
-        * (max_window_size as f64)
-        * 2f64
-        * (core_count as f64)
-        / (exp_bits as f64))
-        .ceil() as usize
-}
+// fn calc_best_chunk_size(max_window_size: usize, core_count: usize, exp_bits: usize) -> usize {
+//     // Best chunk-size (N) can also be calculated using the same logic as calc_window_size:
+//     // n = e^window_size * window_size * 2 * core_count / exp_bits
+//     (((max_window_size as f64).exp() as f64)
+//         * (max_window_size as f64)
+//         * 2f64
+//         * (core_count as f64)
+//         / (exp_bits as f64))
+//         .ceil() as usize
+// }
 
-fn calc_chunk_size<E>(mem: u64, core_count: usize) -> usize
-where
-    E: Engine,
-{
-    let aff_size = std::mem::size_of::<E::G1Affine>() + std::mem::size_of::<E::G2Affine>();
-    let exp_size = exp_size::<E>();
-    let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
-    ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
-        - (2 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
-        / (aff_size + exp_size)
-}
+// fn calc_chunk_size<E>(mem: u64, core_count: usize) -> usize
+// where
+//     E: Engine,
+// {
+//     let aff_size = std::mem::size_of::<E::G1Affine>() + std::mem::size_of::<E::G2Affine>();
+//     let exp_size = exp_size::<E>();
+//     let proj_size = std::mem::size_of::<E::G1>() + std::mem::size_of::<E::G2>();
+//     ((((mem as f64) * (1f64 - MEMORY_PADDING)) as usize)
+//         - (2 * core_count * ((1 << MAX_WINDOW_SIZE) + 1) * proj_size))
+//         / (aff_size + exp_size)
+// }
 
 fn exp_size<E: Engine>() -> usize {
     std::mem::size_of::<<E::Fr as ff::PrimeField>::Repr>()
@@ -112,7 +112,7 @@ where
         // let mem = d.memory();
         // let max_n = calc_chunk_size::<E>(mem, core_count);
         // let best_n = calc_best_chunk_size(MAX_WINDOW_SIZE, core_count, exp_bits);
-        let n = 67108864;//std::cmp::min(max_n, best_n);
+        let n = 33554466;//std::cmp::min(max_n, best_n);
 
         Ok(SingleMultiexpKernel {
             program: opencl::Program::from_opencl(d, &src)?,
@@ -327,13 +327,13 @@ where
                             .zip(self.kernels.par_iter_mut())
                             .map(|((bases, exps), kern)| -> Result<<G as CurveAffine>::Projective, GPUError> {
                                 let mut acc = <G as CurveAffine>::Projective::zero();
-                                let jack_chunk_3090 = 67108864;
-                                let mut jack_window_size = 12;
+                                let jack_chunk_3080 = 33554466;
+                                let mut jack_window_size = 11;
                                 let size_result = std::mem::size_of::<<G as CurveAffine>::Projective>();
                                 if size_result > 144 {
-                                    jack_window_size = 10;
+                                    jack_window_size = 8;
                                 }
-                                for (bases, exps) in bases.chunks(jack_chunk_3090).zip(exps.chunks(jack_chunk_3090)) {
+                                for (bases, exps) in bases.chunks(jack_chunk_3080).zip(exps.chunks(jack_chunk_3080)) {
                                     let result = kern.multiexp(bases, exps, bases.len(),jack_window_size)?;
                                     acc.add_assign(&result);
                                 }
