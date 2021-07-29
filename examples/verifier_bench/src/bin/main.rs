@@ -141,7 +141,7 @@ struct Opts {
     public: usize,
     #[structopt(long = "private", default_value = "1000000")]
     private: usize,
-    #[structopt(long = "samples", default_value = "10")]
+    #[structopt(long = "samples", default_value = "1")]
     samples: usize,
     #[structopt(long = "gpu")]
     gpu: bool,
@@ -191,12 +191,12 @@ fn main() {
     if opts.verify {
         println!("Verifying...");
 
-        let (inputs, proofs) = if opts.dummy {
-            (
-                dummy_inputs::<Bls12, _>(opts.public, rng),
-                dummy_proofs::<Bls12, _>(opts.proofs, rng),
-            )
-        } else {
+        //let (inputs, proofs) = if opts.dummy {
+        //    (
+        //        dummy_inputs::<Bls12, _>(opts.public, rng),
+        //        dummy_proofs::<Bls12, _>(opts.proofs, rng),
+        //    )
+        //} else {
             let mut inputs = Vec::new();
             let mut num = Fr::one();
             num.double();
@@ -206,8 +206,8 @@ fn main() {
             }
             println!("(Generating valid proofs...)");
             let proofs = create_random_proof_batch(circuits.clone(), &params, rng).unwrap();
-            (inputs, proofs)
-        };
+        //    (inputs, proofs)
+        //};
 
         for _ in 0..opts.samples {
             let pref = proofs.iter().collect::<Vec<&_>>();
