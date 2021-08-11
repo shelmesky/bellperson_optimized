@@ -16,6 +16,7 @@ use std::sync::Arc;
 use std::sync::mpsc;
 extern crate scoped_threadpool;
 use scoped_threadpool::Pool;
+use crate::SynthesisError;
 
 // const MAX_WINDOW_SIZE: usize = 11;
 const LOCAL_WORK_SIZE: usize = 256;
@@ -375,6 +376,38 @@ where
                     tx_gpu.send(results).unwrap();
 
                 });
+
+                // CPU
+                scoped.execute(move || {
+                    let used_core = 128;
+                    let per_core_chunk_size = ((cpu_bases.len() as f64) / (used_core as f64)).ceil() as usize;
+                    let cpu_results = if cpu_bases.len() > 0 {
+                        cpu_bases.par_chunks(per_core_chunk_size)
+                            .zip(cpu_exps.par_chunks(per_core_chunk_size))
+                            .map(|(bases, exps)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                                let mut acc = <G as CurveAffine>::Projective::zero();
+
+                                let cpu_waiter = cpu_multiexp(
+                                    &pool,
+                                    (Arc::new(bases.to_vec()), 0),
+                                    FullDensity,
+                                    Arc::new(exps.to_vec()),
+                                    &mut None,
+                                );
+
+                                acc = cpu_waiter.wait().unwrap();
+
+                                Ok(acc)
+                            })
+                            .collect::<Vec<_>>()
+                    } else {
+                        Vec::new()
+                    };
+
+                    tx_cpu.send(cpu_results).unwrap();
+                });
+
+                /*
                 // CPU
                 scoped.execute(move || {
                     let cpu_acc = cpu_multiexp(
@@ -388,8 +421,22 @@ where
 
                     tx_cpu.send(cpu_r).unwrap();
                 });
+                 */
             });
 
+            // waiting results...
+            let gpu_results = rx_gpu.recv().unwrap();
+            let cpu_results = rx_cpu.recv().unwrap();
+
+            for r in gpu_results {
+                acc.add_assign(&r?);
+            }
+
+            for r in cpu_results {
+                acc.add_assign(&r?);
+            }
+
+            /*
             // waiting results...
             let results = rx_gpu.recv().unwrap();
             let cpu_r = rx_cpu.recv().unwrap();
@@ -398,6 +445,7 @@ where
                 acc.add_assign(&r?);
             }
             acc.add_assign(&cpu_r);
+             */
             
             Ok(acc)
         })
