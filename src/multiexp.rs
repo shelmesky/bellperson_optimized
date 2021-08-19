@@ -366,6 +366,45 @@ where
     result
 }
 
+use crate::gpu::GPUError;
+use scoped_threadpool::Pool;
+use crate::multiexp::{multiexp as cpu_multiexp};
+use std::sync::mpsc;
+
+pub fn multiexp_fulldensity_only_cpu<Q, D, G, S>(
+    pool: &Worker,
+    bases: S,
+    _density_map: D,
+    exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+) -> Waiter<Result<<G as CurveAffine>::Projective, SynthesisError>>
+    where
+            for<'a> &'a Q: QueryDensity,
+            D: Send + Sync + 'static + Clone + AsRef<Q>,
+            G: CurveAffine,
+            G::Engine: crate::bls::Engine,
+            S: SourceBuilder<G>,
+{
+    let (cpu_bases, skip) = bases.clone().get();
+    let cpu_exps = exponents.clone();
+
+    let n = exponents.len();
+    let result = gpu::only_cpu_multiexp(
+        pool,
+        cpu_bases,
+        cpu_exps,
+        skip,
+        n
+    );
+
+    match result {
+        Ok(p) => {
+            Waiter::done(Ok(p))
+        },
+        Err(err) => {
+            Waiter::done(Err(SynthesisError::Unsatisfiable))
+        }
+    }
+}
 
 // fulldensity
 pub fn multiexp_fulldensity<Q, D, G, S>(

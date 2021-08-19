@@ -246,6 +246,69 @@ where
     }
 }
 
+pub fn only_cpu_multiexp<G>(
+    pool: &Worker,
+    bases: Arc<Vec<G>>,
+    exps: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+    skip: usize,
+    n: usize,
+) -> GPUResult<<G as CurveAffine>::Projective>
+    where
+        G: CurveAffine,
+        <G as groupy::CurveAffine>::Engine: crate::bls::Engine,
+{
+    use rayon::prelude::*;
+    let mut acc = <G as CurveAffine>::Projective::zero();
+
+    let cpu_bases = bases;
+    let cpu_exps = exps;
+
+    let n = cpu_exps.len();
+    let cpu_bases = &cpu_bases[skip..(skip + n)];
+
+    let (tx_cpu, rx_cpu) = mpsc::channel();
+    let mut scoped_pool = Pool::new(1);
+
+    scoped_pool.scoped(|scoped| {
+        scoped.execute(move || {
+            let used_core = 128;
+            let per_core_chunk_size = ((cpu_bases.len() as f64) / (used_core as f64)).ceil() as usize;
+            let cpu_results = if cpu_bases.len() > 0 {
+                cpu_bases.par_chunks(per_core_chunk_size)
+                    .zip(cpu_exps.par_chunks(per_core_chunk_size))
+                    .map(|(bases, exps)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                        let mut acc = <G as CurveAffine>::Projective::zero();
+
+                        let cpu_waiter = cpu_multiexp(
+                            &pool,
+                            (Arc::new(bases.to_vec()), 0),
+                            FullDensity,
+                            Arc::new(exps.to_vec()),
+                            &mut None,
+                        );
+
+                        acc = cpu_waiter.wait().unwrap();
+
+                        Ok(acc)
+                    })
+                    .collect::<Vec<_>>()
+            } else {
+                Vec::new()
+            };
+
+            tx_cpu.send(cpu_results).unwrap();
+        });
+    });
+
+    let cpu_results = rx_cpu.recv().unwrap();
+
+    for r in cpu_results {
+        acc.add_assign(&r?);
+    }
+
+    Ok(acc)
+}
+
 // A struct that containts several multiexp kernels for different devices
 pub struct MultiexpKernel<E>
 where

@@ -13,7 +13,7 @@ use super::{ParameterSource, Proof};
 use crate::domain::{EvaluationDomain, Scalar};
 use crate::gpu::{LockedFFTKernel, LockedMultiexpKernel};
 use crate::multicore::{Worker, THREAD_POOL};
-use crate::multiexp::{multiexp, multiexp_fulldensity, density_filter, multiexp_skipdensity, DensityTracker, FullDensity};
+use crate::multiexp::{multiexp, multiexp_fulldensity, multiexp_fulldensity_only_cpu, density_filter, multiexp_skipdensity, DensityTracker, FullDensity, SourceBuilder};
 use crate::{
     Circuit, ConstraintSystem, Index, LinearCombination, SynthesisError, Variable, BELLMAN_VERSION,
 };
@@ -456,19 +456,31 @@ where
     info!("ZQ: a_s end: {:?}", now.elapsed());
     drop(fft_kern);
 
-
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
+
+    /*******************************************************************************/
+    let first_as = &a_s[0..2];
+    let other_as = &a_s[2..];
+
+    let (bases, skip) = h_params.clone().get();
+
+    let first = first_as.get(0).unwrap().clone();
+    let result = multiexp_fulldensity_only_cpu(
+                &worker,
+                h_params.clone(),
+                FullDensity,
+                first);
 
     info!("ZQ: h_s start");
     let now = Instant::now();
-    let h_s = a_s
+    let mut h_s = other_as
         .into_iter()
         .map(|a| {
             let h = multiexp_fulldensity(
                 &worker,
                 h_params.clone(),
                 FullDensity,
-                a,
+                a.clone(),
                 &mut multiexp_kern,
             );
             Ok(h)
@@ -476,6 +488,9 @@ where
         .collect::<Result<Vec<_>, SynthesisError>>()?;
     info!("ZQ: h_s end: {:?}", now.elapsed());
 
+    h_s.insert(0, result);
+
+    /*******************************************************************************/
 
     info!("ZQ: l_s start");
     let now = Instant::now();
