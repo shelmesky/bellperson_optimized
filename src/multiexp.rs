@@ -376,7 +376,7 @@ pub fn multiexp_fulldensity_only_cpu<Q, D, G, S>(
     bases: S,
     _density_map: D,
     exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
-) -> Waiter<Result<<G as CurveAffine>::Projective, SynthesisError>>
+) -> Result<<G as CurveAffine>::Projective, SynthesisError>
     where
             for<'a> &'a Q: QueryDensity,
             D: Send + Sync + 'static + Clone + AsRef<Q>,
@@ -398,10 +398,10 @@ pub fn multiexp_fulldensity_only_cpu<Q, D, G, S>(
 
     match result {
         Ok(p) => {
-            Waiter::done(Ok(p))
+            Ok(p)
         },
         Err(err) => {
-            Waiter::done(Err(SynthesisError::Unsatisfiable))
+            Err(SynthesisError::Unsatisfiable)
         }
     }
 }

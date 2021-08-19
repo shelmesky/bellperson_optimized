@@ -12,7 +12,7 @@ use rayon::prelude::*;
 use super::{ParameterSource, Proof};
 use crate::domain::{EvaluationDomain, Scalar};
 use crate::gpu::{LockedFFTKernel, LockedMultiexpKernel};
-use crate::multicore::{Worker, THREAD_POOL};
+use crate::multicore::{Worker, THREAD_POOL, Waiter};
 use crate::multiexp::{multiexp, multiexp_fulldensity, multiexp_fulldensity_only_cpu, density_filter, multiexp_skipdensity, DensityTracker, FullDensity, SourceBuilder};
 use crate::{
     Circuit, ConstraintSystem, Index, LinearCombination, SynthesisError, Variable, BELLMAN_VERSION,
@@ -459,11 +459,76 @@ where
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
 
     /*******************************************************************************/
-    let first_as = &a_s[0..2];
-    let other_as = &a_s[2..];
+    let percent = 2;
+    let cpu_a_s = &a_s[0..percent];
+    let gpu_a_s = &a_s[percent..];
 
-    let (bases, skip) = h_params.clone().get();
+    use scoped_threadpool::Pool;
+    let mut cpu_gpu_pool = Pool::new(2);
 
+    let (h_s_tx_cpu, h_s_rx_cpu) = mpsc::channel();
+    let (h_s_tx_gpu, h_s_rx_gpu) = mpsc::channel();
+
+    cpu_gpu_pool.scoped(|scoped| {
+        let worker_cpu = worker.clone();
+        let params_cpu = h_params.clone();
+
+        // cpu work list
+        scoped.execute(move || {
+            let first = cpu_a_s.get(0).unwrap().clone();
+            let result = multiexp_fulldensity_only_cpu(
+                &worker_cpu,
+                params_cpu.clone(),
+                FullDensity,
+                first);
+            h_s_tx_cpu.send(result).unwrap();
+
+            let first = cpu_a_s.get(1).unwrap().clone();
+            let result = multiexp_fulldensity_only_cpu(
+                &worker_cpu,
+                params_cpu.clone(),
+                FullDensity,
+                first);
+            h_s_tx_cpu.send(result).unwrap();
+        });
+
+        let worker_gpu = worker.clone();
+        let mut params_gpu = h_params.clone();
+        // gpu work list
+        scoped.execute(move || {
+            let mut gpu_result_list = gpu_a_s
+                .into_iter()
+                .map(|a| {
+                    let h = multiexp_fulldensity(
+                        &worker_gpu,
+                        params_gpu.clone(),
+                        FullDensity,
+                        a.clone(),
+                        &mut multiexp_kern,
+                    );
+                    Ok(h)
+                })
+                .collect::<Result<Vec<_>, SynthesisError>>();
+
+            if let Ok(result_list) = gpu_result_list {
+                for item in result_list {
+                    h_s_tx_gpu.send(item.wait()).unwrap();
+                }
+            }
+        });
+    });
+
+    let mut h_s = Vec::new();
+    for result in h_s_rx_cpu.recv() {
+        h_s.push(Waiter::done(result));
+    }
+
+    for result in h_s_rx_gpu.recv() {
+        h_s.push(Waiter::done(result));
+    }
+
+    let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
+    /*
     let first = first_as.get(0).unwrap().clone();
     let result = multiexp_fulldensity_only_cpu(
                 &worker,
@@ -489,6 +554,8 @@ where
     info!("ZQ: h_s end: {:?}", now.elapsed());
 
     h_s.insert(0, result);
+
+     */
 
     /*******************************************************************************/
 
