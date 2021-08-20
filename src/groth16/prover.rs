@@ -506,10 +506,12 @@ where
         scoped.execute(move || {
             let h_s_gpu_start = Instant::now();
             info!("ZQ h_s gpu start");
+            let mut i = 1;
 
             let mut gpu_result_list = gpu_a_s
                 .into_iter()
                 .map(|a| {
+                    info!("ZQ h_s gpu round: {:?}", i);
                     let h = multiexp_fulldensity(
                         &worker_gpu,
                         params_gpu.clone(),
@@ -517,6 +519,7 @@ where
                         a.clone(),
                         &mut multiexp_kern,
                     );
+                    i += 1;
                     Ok(h)
                 })
                 .collect::<Result<Vec<_>, SynthesisError>>();
