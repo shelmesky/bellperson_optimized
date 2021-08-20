@@ -458,7 +458,26 @@ where
 
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
 
+    info!("ZQ: h_s start");
+    let now = Instant::now();
+    let h_s = a_s
+        .into_iter()
+        .map(|a| {
+            let h = multiexp_fulldensity(
+                &worker,
+                h_params.clone(),
+                FullDensity,
+                a,
+                &mut multiexp_kern,
+            );
+            Ok(h)
+        })
+        .collect::<Result<Vec<_>, SynthesisError>>()?;
+    info!("ZQ: h_s end: {:?}", now.elapsed());
+
+
     /*******************************************************************************/
+    /*
     let h_s_start = Instant::now();
     info!("ZQ h_s start");
 
@@ -546,6 +565,8 @@ where
     info!("ZQ h_s end: {:?}", h_s_start.elapsed());
 
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
+
+     */
     /*
     let first = first_as.get(0).unwrap().clone();
     let result = multiexp_fulldensity_only_cpu(
