@@ -271,7 +271,7 @@ pub fn only_cpu_multiexp<G>(
 
     scoped_pool.scoped(|scoped| {
         scoped.execute(move || {
-            let used_core = 16;
+            let used_core = 8;
             let per_core_chunk_size = ((cpu_bases.len() as f64) / (used_core as f64)).ceil() as usize;
             let cpu_results = if cpu_bases.len() > 0 {
                 cpu_bases.par_chunks(per_core_chunk_size)
