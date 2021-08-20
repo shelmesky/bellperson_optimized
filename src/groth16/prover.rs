@@ -459,6 +459,9 @@ where
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
 
     /*******************************************************************************/
+    let h_s_start = Instant::now();
+    info!("ZQ h_s start");
+
     let percent = 2;
     let cpu_a_s = &a_s[0..percent];
     let gpu_a_s = &a_s[percent..];
@@ -526,6 +529,8 @@ where
     for result in h_s_rx_gpu.recv() {
         h_s.push(Waiter::done(result));
     }
+
+    info!("ZQ h_s end: {:?}", h_s_start.elapsed());
 
     let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
     /*
