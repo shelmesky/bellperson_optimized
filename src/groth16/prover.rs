@@ -478,6 +478,9 @@ where
 
         // cpu work list
         scoped.execute(move || {
+            let h_s_cpu_start = Instant::now();
+            info!("ZQ h_s cpu start");
+            
             let first = cpu_a_s.get(0).unwrap().clone();
             let result = multiexp_fulldensity_only_cpu(
                 &worker_cpu,
@@ -493,12 +496,17 @@ where
                 FullDensity,
                 first);
             h_s_tx_cpu.send(result).unwrap();
+
+            info!("ZQ h_s cpu end: {:?}", h_s_cpu_start.elapsed());
         });
 
         let worker_gpu = worker.clone();
         let mut params_gpu = h_params.clone();
         // gpu work list
         scoped.execute(move || {
+            let h_s_gpu_start = Instant::now();
+            info!("ZQ h_s gpu start");
+
             let mut gpu_result_list = gpu_a_s
                 .into_iter()
                 .map(|a| {
@@ -518,6 +526,8 @@ where
                     h_s_tx_gpu.send(item.wait()).unwrap();
                 }
             }
+
+            info!("ZQ h_s gpu end: {:?}", h_s_gpu_start.elapsed());
         });
     });
 
