@@ -4,7 +4,7 @@ use super::sources;
 use super::utils;
 use crate::bls::Engine;
 use crate::multicore::Worker;
-use crate::multiexp::{multiexp as cpu_multiexp, FullDensity};
+use crate::multiexp::{multiexp as cpu_multiexp, multiexp_with_cpu, FullDensity};
 use ff::{PrimeField, ScalarEngine};
 use groupy::{CurveAffine, CurveProjective};
 use log::{error, info};
@@ -269,6 +269,13 @@ pub fn only_cpu_multiexp<G>(
     let (tx_cpu, rx_cpu) = mpsc::channel();
     let mut scoped_pool = Pool::new(1);
 
+    let mut cpu_core_ids = vec![];
+    for i in 1..64 {
+        cpu_core_ids.push(
+            i as usize
+        )
+    }
+
     scoped_pool.scoped(|scoped| {
         scoped.execute(move || {
             let used_core = 4;
@@ -276,15 +283,17 @@ pub fn only_cpu_multiexp<G>(
             let cpu_results = if cpu_bases.len() > 0 {
                 cpu_bases.par_chunks(per_core_chunk_size)
                     .zip(cpu_exps.par_chunks(per_core_chunk_size))
-                    .map(|(bases, exps)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                    .zip(cpu_core_ids.par_chunks(per_core_chunk_size))
+                    .map(|((bases, exps), core_ids)| -> Result<<G as CurveAffine>::Projective, GPUError> {
                         let mut acc = <G as CurveAffine>::Projective::zero();
 
-                        let cpu_waiter = cpu_multiexp(
+                        let cpu_waiter = multiexp_with_cpu(
                             &pool,
                             (Arc::new(bases.to_vec()), 0),
                             FullDensity,
                             Arc::new(exps.to_vec()),
                             &mut None,
+                            Vec::from(core_ids),
                         );
 
                         acc = cpu_waiter.wait().unwrap();

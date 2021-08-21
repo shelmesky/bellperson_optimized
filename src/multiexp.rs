@@ -192,6 +192,105 @@ impl DensityTracker {
     }
 }
 
+fn multiexp_inner_with_cpu<Q, D, G, S>(
+    bases: S,
+    density_map: D,
+    exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+    c: u32,
+    core_ids: Vec<usize>
+) -> Result<<G as CurveAffine>::Projective, SynthesisError>
+    where
+            for<'a> &'a Q: QueryDensity,
+            D: Send + Sync + 'static + Clone + AsRef<Q>,
+            G: CurveAffine,
+            S: SourceBuilder<G>,
+{
+    // Perform this region of the multiexp
+    let this = move |bases: S,
+                     density_map: D,
+                     exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+                     skip: u32|
+                     -> Result<_, SynthesisError> {
+        // Accumulate the result
+        let mut acc = G::Projective::zero();
+
+        // Build a source for the bases
+        let mut bases = bases.new();
+
+        // Create space for the buckets
+        let mut buckets = vec![<G as CurveAffine>::Projective::zero(); (1 << c) - 1];
+
+        let zero = <G::Engine as ScalarEngine>::Fr::zero().into_repr();
+        let one = <G::Engine as ScalarEngine>::Fr::one().into_repr();
+
+        // only the first round uses this
+        let handle_trivial = skip == 0;
+
+        // Sort the bases into buckets
+        for (&exp, density) in exponents.iter().zip(density_map.as_ref().iter()) {
+            if density {
+                if exp == zero {
+                    bases.skip(1)?;
+                } else if exp == one {
+                    if handle_trivial {
+                        bases.add_assign_mixed(&mut acc)?;
+                    } else {
+                        bases.skip(1)?;
+                    }
+                } else {
+                    let mut exp = exp;
+                    exp.shr(skip);
+                    let exp = exp.as_ref()[0] % (1 << c);
+
+                    if exp != 0 {
+                        bases.add_assign_mixed(&mut buckets[(exp - 1) as usize])?;
+                    } else {
+                        bases.skip(1)?;
+                    }
+                }
+            }
+        }
+
+        // Summation by parts
+        // e.g. 3a + 2b + 1c = a +
+        //                    (a) + b +
+        //                    ((a) + b) + c
+        let mut running_sum = G::Projective::zero();
+        for exp in buckets.into_iter().rev() {
+            running_sum.add_assign(&exp);
+            acc.add_assign(&running_sum);
+        }
+
+        Ok(acc)
+    };
+
+    let num_bits = <G::Engine as ScalarEngine>::Fr::NUM_BITS;
+    info!("ZQ: multiexp_inner_with_cpu -> NUM_BITS: {:?},  core_ids: {:?},  c: {:?}", num_bits, core_ids, c);
+
+    //let core_ids_slice = core_ids.as_slice();
+    //let core_ids_slice = core_ids_slice[..num_bits];
+
+    let parts = (0..num_bits)
+        .into_par_iter()
+        .step_by(c as usize)
+        .map(|skip| {
+            this(bases.clone(), density_map.clone(), exponents.clone(), skip)
+        })
+        .collect::<Vec<Result<_, _>>>();
+
+    parts
+        .into_iter()
+        .rev()
+        .try_fold(<G as CurveAffine>::Projective::zero(), |mut acc, part| {
+            for _ in 0..c {
+                acc.double();
+            }
+
+            acc.add_assign(&part?);
+            Ok(acc)
+        })
+}
+
 fn multiexp_inner<Q, D, G, S>(
     bases: S,
     density_map: D,
@@ -305,6 +404,66 @@ where
     }
     let (bss, skip) = bases.get();
     (bss,Arc::new(exps),skip,n)
+}
+
+/// Perform multi-exponentiation. The caller is responsible for ensuring the
+/// query size is the same as the number of exponents.
+pub fn multiexp_with_cpu<Q, D, G, S>(
+    pool: &Worker,
+    bases: S,
+    density_map: D,
+    exponents: Arc<Vec<<<G::Engine as ScalarEngine>::Fr as PrimeField>::Repr>>,
+    kern: &mut Option<gpu::LockedMultiexpKernel<G::Engine>>,
+    core_ids: Vec<usize>,
+) -> Waiter<Result<<G as CurveAffine>::Projective, SynthesisError>>
+    where
+            for<'a> &'a Q: QueryDensity,
+            D: Send + Sync + 'static + Clone + AsRef<Q>,
+            G: CurveAffine,
+            G::Engine: crate::bls::Engine,
+            S: SourceBuilder<G>,
+{
+    if let Some(ref mut kern) = kern {
+        if let Ok(p) = kern.with(|k: &mut gpu::MultiexpKernel<G::Engine>| {
+            let mut exps = vec![exponents[0]; exponents.len()];
+            let mut n = 0;
+            for (&e, d) in exponents.iter().zip(density_map.as_ref().iter()) {
+                if d {
+                    exps[n] = e;
+                    n += 1;
+                }
+            }
+            let (bss, skip) = bases.clone().get();
+            k.multiexp(pool, bss, Arc::new(exps), skip, n)
+        }) {
+            let result = Waiter::done(Ok(p));
+            return result
+        }
+    }
+
+    let c = if exponents.len() < 32 {
+        3u32
+    } else {
+        (f64::from(exponents.len() as u32)).ln().ceil() as u32
+    };
+
+    if let Some(query_size) = density_map.as_ref().get_query_size() {
+        // If the density map has a known query size, it should not be
+        // inconsistent with the number of exponents.
+        assert!(query_size == exponents.len());
+    }
+
+    let result = pool.compute(move || multiexp_inner_with_cpu(bases, density_map, exponents, c, core_ids));
+
+    #[cfg(feature = "gpu")]
+        {
+            // Do not give the control back to the caller till the
+            // multiexp is done. We may want to reacquire the GPU again
+            // between the multiexps.
+            Waiter::done(result.wait())
+        }
+    #[cfg(not(feature = "gpu"))]
+        result
 }
 
 /// Perform multi-exponentiation. The caller is responsible for ensuring the
