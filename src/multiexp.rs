@@ -270,7 +270,7 @@ fn multiexp_inner_with_cpu<Q, D, G, S>(
     //let core_ids_slice = core_ids.as_slice();
     //let core_ids_slice = core_ids_slice[..num_bits];
 
-    let c_new = 8;
+    let c_new = 4;
     let parts = (0..num_bits)
         .into_par_iter()
         .step_by(c_new as usize)

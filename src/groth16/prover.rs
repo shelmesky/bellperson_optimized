@@ -483,7 +483,7 @@ where
     let h_s_start = Instant::now();
     info!("ZQ h_s start");
 
-    let percent = 2;
+    let percent = 3;
     let cpu_a_s = &a_s[0..percent];
     let gpu_a_s = &a_s[percent..];
 
@@ -521,6 +521,16 @@ where
             h_s_tx_cpu.send(result).unwrap();
 
             info!("ZQ h_s cpu round 2 end");
+
+            let first = cpu_a_s.get(2).unwrap().clone();
+            let result = multiexp_fulldensity_only_cpu(
+                &worker_cpu,
+                params_cpu.clone(),
+                FullDensity,
+                first);
+            h_s_tx_cpu.send(result).unwrap();
+
+            info!("ZQ h_s cpu round 3 end");
             info!("ZQ h_s cpu end: {:?}", h_s_cpu_start.elapsed());
         });
 
