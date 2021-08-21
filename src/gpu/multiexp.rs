@@ -401,6 +401,7 @@ where
 
         crate::multicore::THREAD_POOL.install(|| {
             use rayon::prelude::*;
+            extern crate core_affinity;
 
             let mut acc = <G as CurveAffine>::Projective::zero();
 
@@ -408,6 +409,9 @@ where
             let (tx_gpu, rx_gpu) = mpsc::channel();
             let (tx_cpu, rx_cpu) = mpsc::channel();
             let mut scoped_pool = Pool::new(2);
+
+            let mut gpu_core_ids = vec![core_affinity::CoreId{id: 125 as usize}, core_affinity::CoreId{id: 126 as usize}];
+
             scoped_pool.scoped(|scoped| {
                 // GPU
                 scoped.execute(move || {
@@ -416,7 +420,10 @@ where
                             .par_chunks(chunk_size)
                             .zip(exps.par_chunks(chunk_size))
                             .zip(self.kernels.par_iter_mut())
-                            .map(|((bases, exps), kern)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                            .zip(gpu_core_ids.par_iter_mut())
+                            .map(|(((bases, exps), kern), core_id)| -> Result<<G as CurveAffine>::Projective, GPUError> {
+                                core_affinity::set_for_current(*core_id);
+
                                 let mut acc = <G as CurveAffine>::Projective::zero();
                                 let jack_chunk_3080 = 33554466;
                                 let mut jack_windows_size = 11;
