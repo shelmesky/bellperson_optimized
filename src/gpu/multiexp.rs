@@ -276,8 +276,14 @@ pub fn only_cpu_multiexp<G>(
         )
     }
 
+    use std::cell::Cell;
+    use std::sync::Mutex;
+    let mut round_counter = Arc::new(Mutex::new(1));
+
     scoped_pool.scoped(|scoped| {
         scoped.execute(move || {
+            let counter = round_counter.clone();
+
             let used_core = 4;
             let per_core_chunk_size = ((cpu_bases.len() as f64) / (used_core as f64)).ceil() as usize;
             let cpu_results = if cpu_bases.len() > 0 {
@@ -287,6 +293,12 @@ pub fn only_cpu_multiexp<G>(
                     .map(|((bases, exps), core_ids)| -> Result<<G as CurveAffine>::Projective, GPUError> {
                         let mut acc = <G as CurveAffine>::Projective::zero();
 
+                        {
+                            let origin = counter.lock().unwrap();
+                            info!("ZQ: start only_cpu_multiexp -> NO: {:?}", origin);
+                            info!("ZQ: start only_cpu_multiexp -> core_ids {:?}", core_ids);
+                        }
+
                         let cpu_waiter = multiexp_with_cpu(
                             &pool,
                             (Arc::new(bases.to_vec()), 0),
@@ -295,6 +307,11 @@ pub fn only_cpu_multiexp<G>(
                             &mut None,
                             Vec::from(core_ids),
                         );
+
+                        {
+                            let mut value = counter.lock().unwrap();
+                            *value += 1;
+                        }
 
                         acc = cpu_waiter.wait().unwrap();
 
