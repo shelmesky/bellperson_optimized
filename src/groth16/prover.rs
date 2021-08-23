@@ -483,9 +483,9 @@ where
     let h_s_start = Instant::now();
     info!("ZQ h_s start");
 
-    let percent = 2;
-    let cpu_a_s = &a_s[0..percent];
-    let gpu_a_s = &a_s[percent..];
+    let percent = 8;
+    let gpu_a_s = &a_s[0..percent];
+    let cpu_a_s = &a_s[percent..];
 
     use scoped_threadpool::Pool;
     let mut cpu_gpu_pool = Pool::new(2);
