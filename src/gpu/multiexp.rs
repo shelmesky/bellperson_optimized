@@ -448,7 +448,7 @@ where
                             .zip(self.kernels.par_iter_mut())
                             .zip(gpu_core_ids.par_iter_mut())
                             .map(|(((bases, exps), kern), core_id)| -> Result<<G as CurveAffine>::Projective, GPUError> {
-                                core_affinity::set_for_current(*core_id);
+                                // core_affinity::set_for_current(*core_id);
                                 info!("ZQ: force set cpu coreID: {:?}", core_id);
 
                                 let mut acc = <G as CurveAffine>::Projective::zero();

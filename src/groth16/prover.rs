@@ -492,7 +492,7 @@ where
     let (h_s_tx_gpu, h_s_rx_gpu) = mpsc::channel();
 
     cpu_gpu_pool.scoped(|scoped| {
-        let worker_cpu = Worker::new();
+        let worker_cpu = worker.clone();
         let params_cpu = h_params.clone();
 
         // cpu work list
