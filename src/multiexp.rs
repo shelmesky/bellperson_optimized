@@ -270,10 +270,10 @@ fn multiexp_inner_with_cpu<Q, D, G, S>(
     //let core_ids_slice = core_ids.as_slice();
     //let core_ids_slice = core_ids_slice[..num_bits];
 
-    let c_new = 4;
+    // let c_new = 4;
     let parts = (0..num_bits)
         .into_par_iter()
-        .step_by(c_new as usize)
+        .step_by(c as usize)
         .zip(core_ids.par_iter())
         .map(|(skip, core_id)| {
             core_affinity::set_for_current(core_affinity::CoreId{id: *core_id as usize});
