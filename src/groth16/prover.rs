@@ -294,6 +294,10 @@ where
     E: Engine,
     C: Circuit<E> + Send,
 {
+    // init global rayon thread pool
+    rayon::ThreadPoolBuilder::new().num_threads(128).build_global().unwrap();
+    let start = Instant::now();
+
     // build provers
     info!("ZQ: build provers start");
     let now = Instant::now();
@@ -314,7 +318,6 @@ where
 
     // Start prover timer
     info!("ZQ: starting proof timer");
-    let start = Instant::now();
     let worker = Worker::new();
     let input_len = provers[0].input_assignment.len();
     let vk = params.get_vk(input_len)?;
