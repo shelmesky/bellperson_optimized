@@ -426,6 +426,7 @@ pub fn multiexp_with_cpu<Q, D, G, S>(
             G::Engine: crate::bls::Engine,
             S: SourceBuilder<G>,
 {
+    /*
     if let Some(ref mut kern) = kern {
         if let Ok(p) = kern.with(|k: &mut gpu::MultiexpKernel<G::Engine>| {
             let mut exps = vec![exponents[0]; exponents.len()];
@@ -443,6 +444,7 @@ pub fn multiexp_with_cpu<Q, D, G, S>(
             return result
         }
     }
+     */
 
     let c = if exponents.len() < 32 {
         3u32
@@ -485,6 +487,7 @@ where
     G::Engine: crate::bls::Engine,
     S: SourceBuilder<G>,
 {
+    /*
     if let Some(ref mut kern) = kern {
         if let Ok(p) = kern.with(|k: &mut gpu::MultiexpKernel<G::Engine>| {
             let mut exps = vec![exponents[0]; exponents.len()];
@@ -502,6 +505,7 @@ where
             return result
         }
     }
+     */
 
     let c = if exponents.len() < 32 {
         3u32

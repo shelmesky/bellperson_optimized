@@ -433,7 +433,7 @@ where
 
             // concurrent computing
             let (tx_gpu, rx_gpu) = mpsc::channel();
-            let (tx_cpu, rx_cpu) = mpsc::channel();
+            //let (tx_cpu, rx_cpu) = mpsc::channel();
             let mut scoped_pool = Pool::new(2);
 
             let mut gpu_core_ids = vec![core_affinity::CoreId{id: 125 as usize}, core_affinity::CoreId{id: 126 as usize}];
@@ -474,6 +474,7 @@ where
 
                 });
 
+                /*
                 // CPU
                 scoped.execute(move || {
                     let used_core = 128;
@@ -504,6 +505,8 @@ where
                     tx_cpu.send(cpu_results).unwrap();
                 });
 
+                 */
+
                 /*
                 // CPU
                 scoped.execute(move || {
@@ -523,15 +526,15 @@ where
 
             // waiting results...
             let gpu_results = rx_gpu.recv().unwrap();
-            let cpu_results = rx_cpu.recv().unwrap();
+            //let cpu_results = rx_cpu.recv().unwrap();
 
             for r in gpu_results {
                 acc.add_assign(&r?);
             }
 
-            for r in cpu_results {
-                acc.add_assign(&r?);
-            }
+            //for r in cpu_results {
+            //    acc.add_assign(&r?);
+            //}
 
             /*
             // waiting results...
