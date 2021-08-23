@@ -456,8 +456,6 @@ where
     info!("ZQ: a_s end: {:?}", now.elapsed());
     drop(fft_kern);
 
-    let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
-
     /*
     info!("ZQ: h_s start");
     let now = Instant::now();
@@ -483,9 +481,9 @@ where
     let h_s_start = Instant::now();
     info!("ZQ h_s start");
 
-    let percent = 8;
-    let gpu_a_s = &a_s[0..percent];
-    let cpu_a_s = &a_s[percent..];
+    let percent = 2;
+    let cpu_a_s = &a_s[0..percent];
+    let gpu_a_s = &a_s[percent..];
 
     use scoped_threadpool::Pool;
     let mut cpu_gpu_pool = Pool::new(2);
@@ -494,7 +492,7 @@ where
     let (h_s_tx_gpu, h_s_rx_gpu) = mpsc::channel();
 
     cpu_gpu_pool.scoped(|scoped| {
-        let worker_cpu = worker.clone();
+        let worker_cpu = Worker::new();
         let params_cpu = h_params.clone();
 
         // cpu work list
@@ -531,6 +529,8 @@ where
             let h_s_gpu_start = Instant::now();
             info!("ZQ h_s gpu start");
             let mut i = 1;
+
+            let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
 
             let mut gpu_result_list = gpu_a_s
                 .into_iter()
