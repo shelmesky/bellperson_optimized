@@ -437,12 +437,14 @@ where
             let mut c =
                 EvaluationDomain::from_coeffs(std::mem::replace(&mut prover.c, Vec::new()))?;
 
+            let now = Instant::now();
             a.ifft(&worker, &mut fft_kern)?;
             a.coset_fft(&worker, &mut fft_kern)?;
             b.ifft(&worker, &mut fft_kern)?;
             b.coset_fft(&worker, &mut fft_kern)?;
             c.ifft(&worker, &mut fft_kern)?;
             c.coset_fft(&worker, &mut fft_kern)?;
+            info!("ZQ: a_s phase 1 duration: {:?}", now.elapsed());
 
             a.mul_assign(&worker, &b);
             drop(b);
