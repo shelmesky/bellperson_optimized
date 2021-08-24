@@ -294,8 +294,6 @@ where
     E: Engine,
     C: Circuit<E> + Send,
 {
-    // init global rayon thread pool
-    rayon::ThreadPoolBuilder::new().num_threads(128).build_global().unwrap();
     let start = Instant::now();
 
     // build provers
