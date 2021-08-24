@@ -378,6 +378,8 @@ where
         });
         // assignments
         scoped.execute(move || {
+            let now = Instant::now();
+
             let assignments = provers
                 .par_iter_mut()
                 .map(|prover| {
@@ -398,6 +400,8 @@ where
                     (input_assignment, aux_assignment)
                 })
                 .collect::<Vec<_>>();
+
+            info!("ZQ: get params phase 1 duration: {:?}", now.elapsed());
             tx_assignments.send(assignments).unwrap();
         });
     });
