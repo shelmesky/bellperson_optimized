@@ -425,6 +425,7 @@ where
 
 
     info!("ZQ: a_s start");
+    info!("ZQ: a_s provers length: {:?}", provers.len());
     let now = Instant::now();
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
     let a_s = provers
