@@ -610,6 +610,7 @@ where
     /*******************************************************************************/
 
     info!("ZQ: l_s start");
+    info!("ZQ: l_s assignments length: {:?}", assignments.len());
     let now = Instant::now();
     let l_s = assignments
         .iter()
