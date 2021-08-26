@@ -294,70 +294,25 @@ where
     E: Engine,
     C: Circuit<E> + Send,
 {
-    let (tx_h, rx_h) = mpsc::channel();
-    let (tx_l, rx_l) = mpsc::channel();
-    let (tx_bg1, rx_bg1) = mpsc::channel();
-    let (tx_bg2, rx_bg2) = mpsc::channel();
-    let (tx_provers, rx_provers) = mpsc::channel();
+
+
     let start = Instant::now();
 
-    let params = &params;
-
-    info!("ZQ: get params phase [1]  and build provers start");
-    rayon::scope(|scoped| {
-
-        scoped.spawn(move |_| {
-            // build provers
-            // info!("ZQ: build provers start");
-
-            let now = Instant::now();
-            let mut provers = circuits
-                .into_par_iter()
-                .map(|circuit| -> Result<_, SynthesisError> {
-                    let mut prover = ProvingAssignment::new();
-                    prover.alloc_input(|| "", || Ok(E::Fr::one()))?;
-                    circuit.synthesize(&mut prover)?;
-                    for i in 0..prover.input_assignment.len() {
-                        prover.enforce(|| "", |lc| lc + Variable(Index::Input(i)), |lc| lc, |lc| lc);
-                    }
-                    Ok(prover)
-                })
-                .collect::<Result<Vec<_>, _>>();
-            // info!("ZQ: build provers  end: {:?}", now.elapsed());
-
-            tx_provers.send(provers.unwrap()).unwrap();
-        });
-
-        // h_params
-        scoped.spawn(move |_| {
-            let h_params = params.get_h(0).unwrap();
-            tx_h.send(h_params).unwrap();
-        });
-        // l_params
-        scoped.spawn(move |_| {
-            let l_params = params.get_l(0).unwrap();
-            tx_l.send(l_params).unwrap();
-        });
-
-        // bg1_params
-        scoped.spawn(move |_| {
-            let (b_g1_inputs_source, b_g1_aux_source) = params.get_b_g1(1,0).unwrap();
-            tx_bg1.send((b_g1_inputs_source, b_g1_aux_source)).unwrap();
-        });
-        // bg2_params
-        scoped.spawn(move |_| {
-            let (b_g2_inputs_source, b_g2_aux_source) = params.get_b_g2(1,0).unwrap();
-            tx_bg2.send((b_g2_inputs_source, b_g2_aux_source)).unwrap();
-        });
-    });
-
     let now = Instant::now();
-    let h_params = rx_h.recv().unwrap();
-    let l_params = rx_l.recv().unwrap();
-    let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
-    let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
-    let mut provers = rx_provers.recv().unwrap();
-    info!("ZQ: get params phase [1]  and build provers end: {:?}", now.elapsed());
+    info!("ZQ: build provers start");
+    let mut provers = circuits
+        .into_par_iter()
+        .map(|circuit| -> Result<_, SynthesisError> {
+            let mut prover = ProvingAssignment::new();
+            prover.alloc_input(|| "", || Ok(E::Fr::one()))?;
+            circuit.synthesize(&mut prover)?;
+            for i in 0..prover.input_assignment.len() {
+                prover.enforce(|| "", |lc| lc + Variable(Index::Input(i)), |lc| lc, |lc| lc);
+            }
+            Ok(prover)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    info!("ZQ: build provers end: {:?}", now.elapsed());
 
     // Start prover timer
     info!("ZQ: starting proof timer");
@@ -384,21 +339,18 @@ where
     // get params
     info!("ZQ: get params start");
     let now = Instant::now();
-    /*
     let (tx_h, rx_h) = mpsc::channel();
     let (tx_l, rx_l) = mpsc::channel();
     let (tx_a, rx_a) = mpsc::channel();
     let (tx_bg1, rx_bg1) = mpsc::channel();
     let (tx_bg2, rx_bg2) = mpsc::channel();
-     */
-    let (tx_a, rx_a) = mpsc::channel();
     let (tx_assignments, rx_assignments) = mpsc::channel();
     let input_assignment_len = provers[0].input_assignment.len();
     let mut pool = Pool::new(2);
     pool.scoped(|scoped| {
-        // let params = &params;
+        let params = &params;
         let provers = &mut provers;
-        /*
+
         // h_params
         scoped.execute(move || {
             let h_params = params.get_h(0).unwrap();
@@ -409,7 +361,6 @@ where
             let l_params = params.get_l(0).unwrap();
             tx_l.send(l_params).unwrap();
         });
-        */
 
         // a_params
         scoped.execute(move || {
@@ -417,7 +368,6 @@ where
             tx_a.send((a_inputs_source, a_aux_source)).unwrap();
         });
 
-        /*
         // bg1_params
         scoped.execute(move || {
             let (b_g1_inputs_source, b_g1_aux_source) = params.get_b_g1(1,0).unwrap();
@@ -429,7 +379,6 @@ where
             tx_bg2.send((b_g2_inputs_source, b_g2_aux_source)).unwrap();
         });
 
-         */
         // assignments
         scoped.execute(move || {
 
@@ -457,16 +406,16 @@ where
             tx_assignments.send(assignments).unwrap();
         });
     });
+
     // waiting params
     info!("ZQ: waiting params...");
-    //let h_params = rx_h.recv().unwrap();
-    //let l_params = rx_l.recv().unwrap();
+    let h_params = rx_h.recv().unwrap();
+    let l_params = rx_l.recv().unwrap();
     let (a_inputs_source, a_aux_source) = rx_a.recv().unwrap();
-    //let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
-    //let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
+    let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
+    let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
     let assignments = rx_assignments.recv().unwrap();
     info!("ZQ: get params end: {:?}", now.elapsed());
-
 
     #[cfg(feature = "gpu")]
     let prio_lock = if priority {
