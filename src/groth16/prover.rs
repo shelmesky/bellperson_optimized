@@ -301,14 +301,14 @@ where
     let (tx_provers, rx_provers) = mpsc::channel();
     let start = Instant::now();
 
-    let mut pool = Pool::new(6);
     let params = &params;
 
-    pool.scoped(|scoped| {
+    info!("ZQ: get params phase [1]  and build provers start");
+    rayon::scope(|scoped| {
 
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             // build provers
-            info!("ZQ: build provers start");
+            // info!("ZQ: build provers start");
 
             let now = Instant::now();
             let mut provers = circuits
@@ -323,39 +323,45 @@ where
                     Ok(prover)
                 })
                 .collect::<Result<Vec<_>, _>>();
-            info!("ZQ: build provers  end: {:?}", now.elapsed());
+            // info!("ZQ: build provers  end: {:?}", now.elapsed());
 
             tx_provers.send(provers.unwrap()).unwrap();
         });
 
         // h_params
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let h_params = params.get_h(0).unwrap();
             tx_h.send(h_params).unwrap();
         });
         // l_params
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let l_params = params.get_l(0).unwrap();
             tx_l.send(l_params).unwrap();
         });
 
         // bg1_params
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let (b_g1_inputs_source, b_g1_aux_source) = params.get_b_g1(1,0).unwrap();
             tx_bg1.send((b_g1_inputs_source, b_g1_aux_source)).unwrap();
         });
         // bg2_params
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let (b_g2_inputs_source, b_g2_aux_source) = params.get_b_g2(1,0).unwrap();
             tx_bg2.send((b_g2_inputs_source, b_g2_aux_source)).unwrap();
         });
     });
 
+    let now = Instant::now();
+    let h_params = rx_h.recv().unwrap();
+    let l_params = rx_l.recv().unwrap();
+    let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
+    let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
+    let mut provers = rx_provers.recv().unwrap();
+    info!("ZQ: get params phase [1]  and build provers end: {:?}", now.elapsed());
 
     // Start prover timer
     info!("ZQ: starting proof timer");
     let worker = Worker::new();
-    let mut provers = rx_provers.recv().unwrap();
     let input_len = provers[0].input_assignment.len();
     let vk = params.get_vk(input_len)?;
     let n = provers[0].a.len();
@@ -388,7 +394,7 @@ where
     let (tx_a, rx_a) = mpsc::channel();
     let (tx_assignments, rx_assignments) = mpsc::channel();
     let input_assignment_len = provers[0].input_assignment.len();
-    let mut pool = Pool::new(6);
+    let mut pool = Pool::new(2);
     pool.scoped(|scoped| {
         // let params = &params;
         let provers = &mut provers;
@@ -426,7 +432,6 @@ where
          */
         // assignments
         scoped.execute(move || {
-            let now = Instant::now();
 
             let assignments = provers
                 .par_iter_mut()
@@ -449,17 +454,16 @@ where
                 })
                 .collect::<Vec<_>>();
 
-            info!("ZQ: get params phase 1 duration: {:?}", now.elapsed());
             tx_assignments.send(assignments).unwrap();
         });
     });
     // waiting params
     info!("ZQ: waiting params...");
-    let h_params = rx_h.recv().unwrap();
-    let l_params = rx_l.recv().unwrap();
+    //let h_params = rx_h.recv().unwrap();
+    //let l_params = rx_l.recv().unwrap();
     let (a_inputs_source, a_aux_source) = rx_a.recv().unwrap();
-    let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
-    let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
+    //let (b_g1_inputs_source, b_g1_aux_source) = rx_bg1.recv().unwrap();
+    //let (b_g2_inputs_source, b_g2_aux_source) = rx_bg2.recv().unwrap();
     let assignments = rx_assignments.recv().unwrap();
     info!("ZQ: get params end: {:?}", now.elapsed());
 
