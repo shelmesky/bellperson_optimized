@@ -58,7 +58,7 @@ where
 
     // use second gpu
     pub fn create_1(priority: bool) -> GPUResult<FFTKernel<E>> {
-        let lock = locks::GPULock::lock();
+        let lock = locks::GPULock::lock_1();
 
         let devices = opencl::Device::all()?;
         if devices.is_empty() {

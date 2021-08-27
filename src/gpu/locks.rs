@@ -4,6 +4,7 @@ use std::fs::File;
 use std::path::PathBuf;
 
 const GPU_LOCK_NAME: &str = "bellman.gpu.lock";
+const GPU_LOCK_NAME_1: &str = "bellman.gpu.1.lock";
 const PRIORITY_LOCK_NAME: &str = "bellman.priority.lock";
 fn tmp_path(filename: &str) -> PathBuf {
     let mut p = std::env::temp_dir();
@@ -18,6 +19,14 @@ impl GPULock {
     pub fn lock() -> GPULock {
         debug!("Acquiring GPU lock...");
         let f = File::create(tmp_path(GPU_LOCK_NAME)).unwrap();
+        f.lock_exclusive().unwrap();
+        debug!("GPU lock acquired!");
+        GPULock(f)
+    }
+
+    pub fn lock_1() -> GPULock {
+        debug!("Acquiring GPU lock...");
+        let f = File::create(tmp_path(GPU_LOCK_NAME_1)).unwrap();
         f.lock_exclusive().unwrap();
         debug!("GPU lock acquired!");
         GPULock(f)
