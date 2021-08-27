@@ -515,12 +515,12 @@ where
     let (h_s_tx_cpu, h_s_rx_cpu) = mpsc::channel();
     let (h_s_tx_gpu, h_s_rx_gpu) = mpsc::channel();
 
-    cpu_gpu_pool.scoped(|scoped| {
+    rayon::scope(|scoped| {
         let worker_cpu = worker.clone();
         let params_cpu = h_params.clone();
 
         // cpu work list
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let h_s_cpu_start = Instant::now();
             info!("ZQ h_s cpu start");
             
@@ -549,7 +549,7 @@ where
         let worker_gpu = worker.clone();
         let mut params_gpu = h_params.clone();
         // gpu work list
-        scoped.execute(move || {
+        scoped.spawn(move |_| {
             let h_s_gpu_start = Instant::now();
             info!("ZQ h_s gpu start");
             let mut i = 1;
