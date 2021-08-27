@@ -442,14 +442,14 @@ where
                 EvaluationDomain::from_coeffs(std::mem::replace(&mut prover.c, Vec::new()))?;
 
             let now = Instant::now();
-            pool.scoped(|scoped| {
+            rayon::scope(|scoped| {
 
-                scoped.execute( || {
+                scoped.spawn( |_| {
                     a.ifft(&worker, &mut fft_kern).unwrap();
                     a.coset_fft(&worker, &mut fft_kern).unwrap();
                 });
 
-                scoped.execute( || {
+                scoped.spawn( |_| {
                     b.ifft_1(&worker, &mut fft_kern_1).unwrap();
                     b.coset_fft_1(&worker, &mut fft_kern_1).unwrap();
                 });
