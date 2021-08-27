@@ -429,7 +429,7 @@ where
     info!("ZQ: a_s provers length: {:?}", provers.len());
     let now = Instant::now();
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
-    let mut fft_ker1_1 = Some(LockedFFTKernel_1::<E>::new(log_d, priority));
+    let mut fft_kern_1 = Some(LockedFFTKernel_1::<E>::new(log_d, priority));
     let a_s = provers
         .iter_mut()
         .map(|prover| {
@@ -444,8 +444,8 @@ where
             a.ifft(&worker, &mut fft_kern)?;
             a.coset_fft(&worker, &mut fft_kern)?;
 
-            b.ifft_1(&worker, &mut fft_ker1_1)?;
-            b.coset_fft_1(&worker, &mut fft_ker1_1)?;
+            b.ifft_1(&worker, &mut fft_kern_1)?;
+            b.coset_fft_1(&worker, &mut fft_kern_1)?;
 
             c.ifft(&worker, &mut fft_kern)?;
             c.coset_fft(&worker, &mut fft_kern)?;
@@ -467,6 +467,7 @@ where
         .collect::<Result<Vec<_>, SynthesisError>>()?;
     info!("ZQ: a_s end: {:?}", now.elapsed());
     drop(fft_kern);
+    drop(fft_kern_1);
 
     /*
     info!("ZQ: h_s start");
