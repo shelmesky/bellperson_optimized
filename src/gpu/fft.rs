@@ -56,6 +56,36 @@ where
         })
     }
 
+    // use second gpu
+    pub fn create_1(priority: bool) -> GPUResult<FFTKernel<E>> {
+        let lock = locks::GPULock::lock();
+
+        let devices = opencl::Device::all()?;
+        if devices.is_empty() {
+            return Err(GPUError::Simple("No working GPUs found!"));
+        }
+
+        // Select the first device for FFT
+        let device = devices[1].clone();
+
+        let src = sources::kernel::<E>(device.brand() == opencl::Brand::Nvidia);
+
+        let program = opencl::Program::from_opencl(device, &src)?;
+        let pq_buffer = program.create_buffer::<E::Fr>(1 << MAX_LOG2_RADIX >> 1)?;
+        let omegas_buffer = program.create_buffer::<E::Fr>(LOG2_MAX_ELEMENTS)?;
+
+        info!("FFT: 1 working device(s) selected.");
+        info!("FFT: Device 0: {}", program.device().name());
+
+        Ok(FFTKernel {
+            program,
+            pq_buffer,
+            omegas_buffer,
+            _lock: lock,
+            priority,
+        })
+    }
+
     /// Peforms a FFT round
     /// * `log_n` - Specifies log2 of number of elements
     /// * `log_p` - Specifies log2 of `p`, (http://www.bealto.com/gpu-fft_group-1.html)

@@ -11,7 +11,7 @@ use rayon::prelude::*;
 
 use super::{ParameterSource, Proof};
 use crate::domain::{EvaluationDomain, Scalar};
-use crate::gpu::{LockedFFTKernel, LockedMultiexpKernel};
+use crate::gpu::{LockedFFTKernel, LockedMultiexpKernel, LockedFFTKernel_1};
 use crate::multicore::{Worker, THREAD_POOL, Waiter};
 use crate::multiexp::{multiexp, multiexp_fulldensity, multiexp_fulldensity_only_cpu, density_filter, multiexp_skipdensity, DensityTracker, FullDensity, SourceBuilder};
 use crate::{
@@ -429,6 +429,7 @@ where
     info!("ZQ: a_s provers length: {:?}", provers.len());
     let now = Instant::now();
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
+    let mut fft_ker1_1 = Some(LockedFFTKernel_1::<E>::new(log_d, priority));
     let a_s = provers
         .iter_mut()
         .map(|prover| {
@@ -442,8 +443,10 @@ where
             let now = Instant::now();
             a.ifft(&worker, &mut fft_kern)?;
             a.coset_fft(&worker, &mut fft_kern)?;
-            b.ifft(&worker, &mut fft_kern)?;
-            b.coset_fft(&worker, &mut fft_kern)?;
+
+            b.ifft_1(&worker, &mut fft_ker1_1)?;
+            b.coset_fft_1(&worker, &mut fft_ker1_1)?;
+
             c.ifft(&worker, &mut fft_kern)?;
             c.coset_fft(&worker, &mut fft_kern)?;
             info!("ZQ: a_s phase 1 duration: {:?}", now.elapsed());

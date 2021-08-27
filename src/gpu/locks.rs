@@ -70,6 +70,7 @@ use super::fft::FFTKernel;
 use super::multiexp::MultiexpKernel;
 use crate::bls::Engine;
 use crate::domain::create_fft_kernel;
+use crate::domain::create_fft_kernel_1;
 use crate::multiexp::create_multiexp_kernel;
 
 macro_rules! locked_kernel {
@@ -151,3 +152,4 @@ locked_kernel!(
     create_multiexp_kernel,
     "Multiexp"
 );
+locked_kernel!(LockedFFTKernel_1, FFTKernel, create_fft_kernel_1, "FFT");
