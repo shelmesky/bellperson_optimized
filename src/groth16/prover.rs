@@ -346,7 +346,7 @@ where
     let (tx_bg2, rx_bg2) = mpsc::channel();
     let (tx_assignments, rx_assignments) = mpsc::channel();
     let input_assignment_len = provers[0].input_assignment.len();
-    let mut pool = Pool::new(2);
+    let mut pool = Pool::new(6);
     pool.scoped(|scoped| {
         let params = &params;
         let provers = &mut provers;
