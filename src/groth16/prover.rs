@@ -454,11 +454,11 @@ where
                     b.coset_fft_1(&worker, &mut fft_kern_1).unwrap();
                 });
 
-                scoped.execute( || {
-                    c.ifft(&worker, &mut None).unwrap();
-                    c.coset_fft(&worker, &mut None).unwrap();
-                });
             });
+
+            c.ifft(&worker, &mut fft_kern).unwrap();
+            c.coset_fft(&worker, &mut fft_kern).unwrap();
+
             info!("ZQ: a_s phase 1 duration: {:?}", now.elapsed());
 
 
