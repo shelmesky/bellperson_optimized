@@ -430,6 +430,7 @@ where
     let now = Instant::now();
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
     let mut fft_kern_1 = Some(LockedFFTKernel_1::<E>::new(log_d, priority));
+    let mut pool = Pool::new(3);
     let a_s = provers
         .iter_mut()
         .map(|prover| {
@@ -441,15 +442,25 @@ where
                 EvaluationDomain::from_coeffs(std::mem::replace(&mut prover.c, Vec::new()))?;
 
             let now = Instant::now();
-            a.ifft(&worker, &mut fft_kern)?;
-            a.coset_fft(&worker, &mut fft_kern)?;
+            pool.scoped(|scoped| {
 
-            b.ifft_1(&worker, &mut fft_kern_1)?;
-            b.coset_fft_1(&worker, &mut fft_kern_1)?;
+                scoped.execute( || {
+                    a.ifft(&worker, &mut fft_kern).unwrap();
+                    a.coset_fft(&worker, &mut fft_kern).unwrap();
+                });
 
-            c.ifft(&worker, &mut fft_kern)?;
-            c.coset_fft(&worker, &mut fft_kern)?;
+                scoped.execute( || {
+                    b.ifft_1(&worker, &mut fft_kern_1).unwrap();
+                    b.coset_fft_1(&worker, &mut fft_kern_1).unwrap();
+                });
+
+                scoped.execute( || {
+                    c.ifft(&worker, &mut None).unwrap();
+                    c.coset_fft(&worker, &mut None).unwrap();
+                });
+            });
             info!("ZQ: a_s phase 1 duration: {:?}", now.elapsed());
+
 
             a.mul_assign(&worker, &b);
             drop(b);
