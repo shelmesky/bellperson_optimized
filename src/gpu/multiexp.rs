@@ -439,9 +439,9 @@ where
 
             let mut gpu_core_ids = vec![core_affinity::CoreId{id: 125 as usize}, core_affinity::CoreId{id: 126 as usize}];
 
-            scoped_pool.scoped(|scoped| {
+            rayon::scope(|scoped| {
                 // GPU
-                scoped.execute(move || {
+                scoped.spawn(move |_| {
                     let results = if n > 0 {
                         bases
                             .par_chunks(chunk_size)
