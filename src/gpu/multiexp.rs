@@ -296,7 +296,8 @@ pub fn only_cpu_multiexp<G>(
                         {
                             let origin = counter.lock().unwrap();
                             info!("ZQ: start only_cpu_multiexp -> NO: {:?}", origin);
-                            info!("ZQ: start only_cpu_multiexp -> core_ids {:?}", core_ids);
+                            info!("ZQ: start only_cpu_multiexp -> bases len: {:?}, exps len: {:?}, core_ids {:?}",
+                                bases.len(), exps.len(), core_ids);
                         }
 
                         let cpu_waiter = multiexp_with_cpu(
