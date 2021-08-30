@@ -300,6 +300,7 @@ where
 
     let now = Instant::now();
     info!("ZQ: build provers start");
+    // 生成电路的约束系统，这一步会回调每个电路不同的电路逻辑
     let mut provers = circuits
         .into_par_iter()
         .map(|circuit| -> Result<_, SynthesisError> {
@@ -337,6 +338,7 @@ where
     }
 
     // get params
+    // 读取setup阶段提前生成的参数文件
     info!("ZQ: get params start");
     let now = Instant::now();
     let (tx_h, rx_h) = mpsc::channel();
@@ -427,6 +429,7 @@ where
 
     info!("ZQ: a_s start");
     info!("ZQ: a_s provers length: {:?}", provers.len());
+    // iFFT生成三个多项式系数，cosetFFT生成多项式在coset处的取值.
     let now = Instant::now();
     let mut fft_kern = Some(LockedFFTKernel::<E>::new(log_d, priority));
     let mut fft_kern_1 = Some(LockedFFTKernel_1::<E>::new(log_d, priority));
@@ -462,6 +465,7 @@ where
             info!("ZQ: a_s phase 1 duration: {:?}", now.elapsed());
 
 
+            // a * b - c / z
             a.mul_assign(&worker, &b);
             drop(b);
             a.sub_assign(&worker, &c);
@@ -504,6 +508,7 @@ where
 
     let h_s_start = Instant::now();
     info!("ZQ h_s start");
+    // 把之前计算的数（多项式值），映射到椭圆曲线上。
 
     let percent = 2;
     let cpu_a_s = &a_s[0..percent];
@@ -628,6 +633,7 @@ where
 
     info!("ZQ: l_s start");
     info!("ZQ: l_s assignments length: {:?}", assignments.len());
+    // 把之前计算的数（多项式值），映射到椭圆曲线上。
     let now = Instant::now();
     let l_s = assignments
         .iter()
@@ -646,6 +652,7 @@ where
 
 
     info!("ZQ: inputs start");
+    // 处理电路的公开和私有输入
     let now = Instant::now();
     let inputs = provers
         .into_iter()
@@ -752,6 +759,7 @@ where
 
 
     info!("ZQ: proofs start");
+    // 生成证明
     let now = Instant::now();
     let proofs = h_s
         .into_iter()
