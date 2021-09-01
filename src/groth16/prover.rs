@@ -652,6 +652,7 @@ where
 
 
     info!("ZQ: inputs start");
+    info!("ZQ: inputs length: {:?}", provers.len());
     // 处理电路的公开和私有输入
     let now = Instant::now();
     let inputs = provers
@@ -661,6 +662,7 @@ where
             let b_input_density = Arc::new(prover.b_input_density);
             let b_aux_density = Arc::new(prover.b_aux_density);
 
+            let start = Instant::now();
             let a_inputs = multiexp_fulldensity(
                 &worker,
                 a_inputs_source.clone(),
@@ -668,7 +670,9 @@ where
                 input_assignment.clone(),
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 1: {:?}", start.elapsed());
 
+            let start = Instant::now();
             let (
                 a_aux_bss,
                 a_aux_exps,
@@ -687,7 +691,9 @@ where
                 a_aux_n,
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 2: {:?}", start.elapsed());
 
+            let start = Instant::now();
             let b_g1_inputs = multiexp(
                 &worker,
                 b_g1_inputs_source.clone(),
@@ -695,7 +701,9 @@ where
                 input_assignment.clone(),
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 3: {:?}", start.elapsed());
 
+            let start = Instant::now();
             let (
                 b_g1_aux_bss,
                 b_g1_aux_exps,
@@ -714,6 +722,9 @@ where
                 b_g1_aux_n,
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 4: {:?}", start.elapsed());
+
+            let start = Instant::now();
             let b_g2_inputs = multiexp(
                 &worker,
                 b_g2_inputs_source.clone(),
@@ -721,7 +732,9 @@ where
                 input_assignment.clone(),
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 5: {:?}", start.elapsed());
 
+            let start = Instant::now();
             let (
                 b_g2_aux_bss,
                 b_g2_aux_exps,
@@ -740,6 +753,7 @@ where
                 b_g2_aux_n,
                 &mut multiexp_kern,
             );
+            info!("ZQ: inputs phase 6: {:?}", start.elapsed());
 
             Ok((
                 a_inputs,
