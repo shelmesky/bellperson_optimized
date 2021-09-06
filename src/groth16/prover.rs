@@ -283,6 +283,12 @@ where
     THREAD_POOL.install(|| create_proof_batch_priority_inner(circuits, params, r_s, s_s, priority))
 }
 
+/*
+fn print_type_of<T>(_: &T) -> String {
+    format!("{}", unsafe { std::intrinsics::type_name::<T>() })
+}
+ */
+
 fn create_proof_batch_priority_inner<E, C, P: ParameterSource<E>>(
     circuits: Vec<C>,
     params: P,
@@ -631,6 +637,91 @@ where
 
     /*******************************************************************************/
 
+    let l_s_start = Instant::now();
+    info!("ZQ l_s start");
+
+    let percent = 2;
+    let cpu_l_s = &assignments[0..percent];
+    let gpu_l_s = &assignments[percent..];
+    let cpu_l_s = cpu_l_s.to_vec();
+
+    let mut cpu_gpu_pool = Pool::new(2);
+
+    let (l_s_tx_cpu, l_s_rx_cpu) = mpsc::channel();
+    let (l_s_tx_gpu, l_s_rx_gpu) = mpsc::channel();
+
+    let worker_cpu = worker.clone();
+    let params_cpu = l_params.clone();
+    cpu_gpu_pool.scoped(|scoped| {
+        let worker_cpu = worker.clone();
+        let params_cpu = l_params.clone();
+
+        info!("ZQ l_s cpu start");
+        scoped.execute(move || {
+            let (_, first) = cpu_l_s.get(0).unwrap().clone();
+            let result = multiexp_fulldensity_only_cpu(
+                &worker_cpu,
+                params_cpu.clone(),
+                FullDensity,
+                first);
+
+            let (_, second) = cpu_l_s.get(1).unwrap().clone();
+            let result = multiexp_fulldensity_only_cpu(
+                &worker_cpu,
+                params_cpu.clone(),
+                FullDensity,
+                second);
+
+            l_s_tx_cpu.send(result).unwrap();
+        });
+
+        let worker_gpu = worker.clone();
+        let mut params_gpu = l_params.clone();
+        scoped.execute(move || {
+            let h_s_gpu_start = Instant::now();
+            info!("ZQ l_s gpu start");
+            let mut i = 1;
+
+            let mut multiexp_kern = Some(LockedMultiexpKernel::<E>::new(log_d, priority));
+
+            let mut gpu_result_list = gpu_l_s
+                .into_iter()
+                .map(|(_, aux_assignment)| {
+                    info!("ZQ l_s gpu round: {:?}", i);
+                    let h = multiexp_fulldensity(
+                        &worker_gpu,
+                        params_gpu.clone(),
+                        FullDensity,
+                        aux_assignment.clone(),
+                        &mut multiexp_kern,
+                    );
+                    i += 1;
+                    Ok(h)
+                })
+                .collect::<Result<Vec<_>, SynthesisError>>();
+
+            if let Ok(result_list) = gpu_result_list {
+                for item in result_list {
+                    l_s_tx_gpu.send(item.wait()).unwrap();
+                }
+            }
+
+            info!("ZQ l_s gpu end: {:?}", h_s_gpu_start.elapsed());
+        });
+    });
+
+    let mut l_s = Vec::new();
+    for result in l_s_rx_cpu.recv() {
+        l_s.push(Waiter::done(result));
+    }
+
+    for result in l_s_rx_gpu.recv() {
+        l_s.push(Waiter::done(result));
+    }
+
+    info!("ZQ l_s end: {:?}", h_s_start.elapsed());
+
+    /*
     info!("ZQ: l_s start");
     info!("ZQ: l_s assignments length: {:?}", assignments.len());
     // 把之前计算的数（多项式值），映射到椭圆曲线上。
@@ -649,6 +740,7 @@ where
         })
         .collect::<Result<Vec<_>, SynthesisError>>()?;
     info!("ZQ: l_s end: {:?}", now.elapsed());
+     */
 
 
     info!("ZQ: inputs start");
